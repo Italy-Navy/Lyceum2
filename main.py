@@ -62,13 +62,13 @@ if __name__ == "__main__":
     # будем использовать как фон
     background.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
 
-    entities = pygame.sprite.Group()  # Все объекты
-    platforms = []  # то, во что мы будем врезаться или опираться
-
     hero = Player(100, 30)  # создаем героя по (x,y) координатам
-    entities.add(hero)
     left = right = False  # по умолчанию - стоим
     up = False
+
+    entities = pygame.sprite.Group()  # Все объекты
+    platforms = []  # то, во что мы будем врезаться или опираться
+    entities.add(hero)
 
     clock = pygame.time.Clock()
     x = y = 0
@@ -90,6 +90,7 @@ if __name__ == "__main__":
 
     total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
+
     camera = Camera(camera_configure, total_level_width, total_level_height)
 
     running = True
@@ -98,28 +99,28 @@ if __name__ == "__main__":
         for event in pygame.event.get():  # Обрабатываем события
             if event.type == QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
-                    up = True
-                if event.key == pygame.K_a:
-                    left = True
-                if event.key == pygame.K_d:
+            elif event.type == KEYDOWN:
+                if event.key == K_d:
                     right = True
+                if event.key == K_a:
+                    left = True
+                if event.key == K_w:
+                    up = True
 
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_w:
-                    up = False
-                if event.key == pygame.K_a:
+            elif event.type == KEYUP:
+                if event.key == K_d:
                     right = False
-                if event.key == pygame.K_d:
+                if event.key == K_a:
                     left = False
+                if event.key == K_w:
+                    up = False
 
         screen.blit(background, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
+        camera.update(hero)  # центризируем камеру относительно персонажа
         hero.update(left, right, up, platforms)  # передвижение
         for element in entities:
             screen.blit(element.image, camera.apply(element))
-        screen.blit(hero.image, hero)
-        camera.update(hero)  # центризируем камеру относительно персонажа
+        screen.blit(hero.image, camera.apply(hero))
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
         print(clock.get_fps())
