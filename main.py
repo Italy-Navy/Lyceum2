@@ -1,8 +1,5 @@
 # Импортируем библиотеку pygame
-from pprint import pprint
 
-import pygame
-from pygame import *
 from blocks import *
 from hero import *
 
@@ -54,6 +51,12 @@ def camera_configure(camera, target_rect):
     return Rect(l, t, w, h)
 
 
+def get_x_y(s):
+    s = str(s)
+    e = s[6:-2].split(',')
+    return int(e[0]), int(e[1])
+
+
 if __name__ == "__main__":
     pygame.init()  # Инициация PyGame, обязательная строчка
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
@@ -64,7 +67,7 @@ if __name__ == "__main__":
 
     hero = Player(100, 30)  # создаем героя по (x,y) координатам
     left = right = False  # по умолчанию - стоим
-    up = False
+    attack = up = False
 
     entities = pygame.sprite.Group()  # Все объекты
     platforms = []  # то, во что мы будем врезаться или опираться
@@ -106,6 +109,8 @@ if __name__ == "__main__":
                     left = True
                 if event.key == K_w:
                     up = True
+                if event.key == K_i:
+                    attack = True
 
             elif event.type == KEYUP:
                 if event.key == K_d:
@@ -114,13 +119,16 @@ if __name__ == "__main__":
                     left = False
                 if event.key == K_w:
                     up = False
+                if event.key == K_i:
+                    attack = False
 
         screen.blit(background, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
+        x_hero, y_hero = get_x_y(hero.rect)
+        hero.update(x_hero, y_hero, left, right, up, attack, platforms)  # передвижение
         camera.update(hero)  # центризируем камеру относительно персонажа
-        hero.update(left, right, up, platforms)  # передвижение
         for element in entities:
             screen.blit(element.image, camera.apply(element))
         screen.blit(hero.image, camera.apply(hero))
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
-        print(clock.get_fps())
+        #print(clock.get_fps())

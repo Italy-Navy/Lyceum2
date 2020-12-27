@@ -77,19 +77,41 @@ JUMP_LEFT = [
     ('%s/data/animations/Main_Hero/jump_l/5.png' % ICON_DIR),
 ]
 
+ATTACK_RIGHT = [
+    ('%s/data/animations/Main_Hero/attack_r/1.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_r/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_r/3.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_r/4.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_r/5.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_r/6.png' % ICON_DIR),
+]
+
+ATTACK_LEFT = [
+    ('%s/data/animations/Main_Hero/attack_l/1.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_l/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_l/3.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_l/4.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_l/5.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/attack_l/6.png' % ICON_DIR),
+]
+
 
 class Player(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)
+        self.x = x
+        self.y = y
         self.xvel = 0  # скорость перемещения. 0 - стоять на месте
         self.startX = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
         self.startY = y
         self.POSITION_RIGHT = True
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
-        self.image = Surface((WIDTH, HEIGHT))
+        self.flag_attack_left = False
+        self.image = Surface((WIDTH + 50, HEIGHT))
         self.image.fill(Color(COLOR))
-        self.rect = Rect(x, y, WIDTH - 10, HEIGHT)  # прямоугольный объект
+        self.return_update = 0
+        self.rect = Rect(x, y, WIDTH, HEIGHT)  # прямоугольный объект
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
         #        Анимация движения вправо
         boltAnim = []
@@ -128,13 +150,38 @@ class Player(sprite.Sprite):
         self.boltJumpLeft = pyganim.PygAnimation(boltAnim)
         self.boltJumpLeft.play()
 
-    def update(self, left, right, up, platforms):
+        boltAnim = []
+        for anim in ATTACK_RIGHT:
+            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+        self.boltAttackRight = pyganim.PygAnimation(boltAnim)
+        self.boltAttackRight.play()
+
+        boltAnim = []
+        for anim in ATTACK_LEFT:
+            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+        self.boltAttackLeft = pyganim.PygAnimation(boltAnim)
+        self.boltAttackLeft.play()
+
+    def update(self, x, y, left, right, up, attack, platforms):
+        if self.flag_attack_left and not attack:
+            self.rect = Rect(x + 30, y, WIDTH, HEIGHT)  # прямоугольный объект
+            self.flag_attack_left = False
+
+        if not (left or right):  # стоим, когда нет указаний идти
+            self.xvel = 0
+            if not up:
+                self.image.fill(Color(COLOR))
+                if self.POSITION_RIGHT:
+                    self.boltIdleRight.blit(self.image, (0, 0))
+                else:
+                    self.boltIdleLeft.blit(self.image, (0, 0))
+
         if up:
             if self.onGround:  # прыгаем, только когда можем оттолкнуться от земли
                 self.yvel = -JUMP_POWER
             self.image.fill(Color(COLOR))
             if self.POSITION_RIGHT:
-                self.boltJumpRight.blit(self.image, (0,0))
+                self.boltJumpRight.blit(self.image, (0, 0))
             else:
                 self.boltJumpLeft.blit(self.image, (0, 0))
 
@@ -156,14 +203,15 @@ class Player(sprite.Sprite):
             else:
                 self.boltRunRight.blit(self.image, (0, 0))
 
-        if not (left or right):  # стоим, когда нет указаний идти
-            self.xvel = 0
-            if not up:
-                self.image.fill(Color(COLOR))
-                if self.POSITION_RIGHT:
-                    self.boltIdleRight.blit(self.image, (0, 0))
-                else:
-                    self.boltIdleLeft.blit(self.image, (0, 0))
+        if attack:
+            self.image.fill(Color(COLOR))
+            if self.POSITION_RIGHT:
+                self.boltAttackRight.blit(self.image, (0, 0))
+            else:
+                if not self.flag_attack_left:
+                    self.xvel -= 30
+                    self.flag_attack_left = True
+                self.boltAttackLeft.blit(self.image, (0, 0))
 
         if not self.onGround:
             self.yvel += GRAVITY
@@ -171,14 +219,12 @@ class Player(sprite.Sprite):
         self.onGround = False  # Мы не знаем, когда мы на земле((
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
-
         self.rect.x += self.xvel  # переносим свои положение на xvel
         self.collide(self.xvel, 0, platforms)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
             if sprite.collide_rect(self, p):  # если есть пересечение платформы с игроком
-
                 if xvel > 0:  # если движется вправо
                     self.rect.right = p.rect.left  # то не движется вправо
 
