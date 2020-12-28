@@ -35,8 +35,8 @@ class Camera(object):
     def apply(self, target):
         return target.rect.move(self.state.topleft)
 
-    def update(self, target):
-        self.state = self.camera_func(self.state, target.rect)
+    def update(self, target, delta):
+        self.state = self.camera_func(self.state, attack_camera_left(target.rect, delta))
 
 
 def camera_configure(camera, target_rect):
@@ -49,6 +49,12 @@ def camera_configure(camera, target_rect):
     t = max(-(camera.height - WIN_HEIGHT), t)  # Не движемся дальше нижней границы
     t = min(0, t)  # Не движемся дальше верхней границы
     return Rect(l, t, w, h)
+
+
+def attack_camera_left(rectangle, delta):
+    s = str(rectangle)
+    e = s[6:-2].split(',')
+    return Rect(int(e[0]) + delta, int(e[1]), int(e[2]) + delta, int(e[3]))
 
 
 def get_x_y(s):
@@ -124,8 +130,8 @@ if __name__ == "__main__":
 
         screen.blit(background, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
         x_hero, y_hero = get_x_y(hero.rect)
-        hero.update(x_hero, y_hero, left, right, up, attack, platforms)  # передвижение
-        camera.update(hero)  # центризируем камеру относительно персонажа
+        camera_delta = hero.update(x_hero, y_hero, left, right, up, attack, platforms)  # передвижение
+        camera.update(hero, camera_delta)  # центризируем камеру относительно персонажа
         for element in entities:
             screen.blit(element.image, camera.apply(element))
         screen.blit(hero.image, camera.apply(hero))

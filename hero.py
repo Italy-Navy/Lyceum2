@@ -166,6 +166,7 @@ class Player(sprite.Sprite):
         if self.flag_attack_left and not attack:
             self.rect = Rect(x + 30, y, WIDTH, HEIGHT)  # прямоугольный объект
             self.flag_attack_left = False
+            self.return_update = 0
 
         if not (left or right):  # стоим, когда нет указаний идти
             self.xvel = 0
@@ -211,6 +212,7 @@ class Player(sprite.Sprite):
                 if not self.flag_attack_left:
                     self.xvel -= 30
                     self.flag_attack_left = True
+                    self.return_update = 30
                 self.boltAttackLeft.blit(self.image, (0, 0))
 
         if not self.onGround:
@@ -221,6 +223,7 @@ class Player(sprite.Sprite):
         self.collide(0, self.yvel, platforms)
         self.rect.x += self.xvel  # переносим свои положение на xvel
         self.collide(self.xvel, 0, platforms)
+        return self.return_update
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
