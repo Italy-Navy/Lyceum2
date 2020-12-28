@@ -95,6 +95,22 @@ ATTACK_LEFT = [
     ('%s/data/animations/Main_Hero/attack_l/6.png' % ICON_DIR),
 ]
 
+CROUCH_RIGHT = [
+    ('%s/data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_r/3.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
+]
+
+CROUCH_LEFT = [
+    ('%s/data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_l/3.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
+]
+
 
 class Player(sprite.Sprite):
     def __init__(self, x, y):
@@ -161,6 +177,18 @@ class Player(sprite.Sprite):
             boltAnim.append((anim, ANIMATION_DELAY_JUMP))
         self.boltAttackLeft = pyganim.PygAnimation(boltAnim)
         self.boltAttackLeft.play()
+
+        boltAnim = []
+        for anim in CROUCH_RIGHT:
+            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+        self.boltCrouchRight = pyganim.PygAnimation(boltAnim)
+        self.boltCrouchRight.play()
+
+        boltAnim = []
+        for anim in CROUCH_LEFT:
+            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+        self.boltCrouchLeft = pyganim.PygAnimation(boltAnim)
+        self.boltCrouchLeft.play()
 
     def update(self, x, y, left, right, up, attack, platforms):
         if self.flag_attack_left and not attack:
