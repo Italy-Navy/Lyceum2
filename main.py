@@ -1,5 +1,5 @@
 # Импортируем библиотеку pygame
-
+from Doctor import *
 from blocks import *
 from hero import *
 
@@ -72,12 +72,16 @@ if __name__ == "__main__":
     background.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
 
     hero = Player(100, 30)  # создаем героя по (x,y) координатам
+    doctor_mob1 = Doctor(350, 500)
+    doctor_mob2 = Doctor(550, 500)
     left = right = False  # по умолчанию - стоим
     attack = up = False
 
     entities = pygame.sprite.Group()  # Все объекты
     platforms = []  # то, во что мы будем врезаться или опираться
     entities.add(hero)
+    entities.add(doctor_mob1)
+    entities.add(doctor_mob2)
 
     clock = pygame.time.Clock()
     x = y = 0
@@ -132,9 +136,13 @@ if __name__ == "__main__":
         x_hero, y_hero = get_x_y(hero.rect)
         camera_delta = hero.update(x_hero, y_hero, left, right, up, attack, platforms)  # передвижение
         camera.update(hero, camera_delta)  # центризируем камеру относительно персонажа
+        doctor_mob1.doctor_behaivor(x_hero, y_hero, platforms)
+        doctor_mob2.doctor_behaivor(x_hero, y_hero, platforms)
         for element in entities:
             screen.blit(element.image, camera.apply(element))
         screen.blit(hero.image, camera.apply(hero))
+        screen.blit(doctor_mob1.image, camera.apply(doctor_mob1))
+        screen.blit(doctor_mob2.image, camera.apply(doctor_mob2))
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
         #print(clock.get_fps())
