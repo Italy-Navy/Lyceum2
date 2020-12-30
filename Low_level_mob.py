@@ -3,7 +3,7 @@ import playanim as pyganim
 import os
 
 MOVE_SPEED = 1
-WIDTH = 51
+WIDTH = 15
 HEIGHT = 48
 COLOR = "#888888"
 GRAVITY = 0.35

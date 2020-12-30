@@ -237,7 +237,7 @@ class PygAnimation(object):
             startTime = time.time()
 
         if self._state == PLAYING:
-            if self.isFinished():
+            if self.isFinished() and not self.loop:
                 # if the animation doesn't loop and has already finished, then
                 # calling play() causes it to replay from the beginning.
                 self._playingStartTime = startTime
@@ -600,7 +600,6 @@ class PygAnimation(object):
             elapsed = (self._pausedStartTime - self._playingStartTime) * self.rate
         if self._loop:
             elapsed = elapsed % self._startTimes[-1]
-        else:
             elapsed = getInBetweenValue(0, elapsed, self._startTimes[-1])
         elapsed += 0.00001  # done to compensate for rounding errors
         return elapsed
@@ -621,6 +620,10 @@ class PygAnimation(object):
         self.elapsed = self._startTimes[frameNum]
 
     currentFrameNum = property(_propGetCurrentFrameNum, _propSetCurrentFrameNum)
+
+    @property
+    def startTimes(self):
+        return self._startTimes
 
 
 class PygConductor(object):

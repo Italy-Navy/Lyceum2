@@ -73,7 +73,7 @@ if __name__ == "__main__":
     low_level_mob = LowLevelMob(750, 500)
     plant_mob = Plant(250, 400)
     left = right = False  # по умолчанию - стоим
-    attack = up = False
+    attack = up = ability = False
 
     entities = pygame.sprite.Group()  # Все объекты
     platforms = []  # то, во что мы будем врезаться или опираться
@@ -121,6 +121,8 @@ if __name__ == "__main__":
                     up = True
                 if event.key == K_i:
                     attack = True
+                if event.key == K_p:
+                    ability = True
 
             elif event.type == KEYUP:
                 if event.key == K_d:
@@ -131,14 +133,23 @@ if __name__ == "__main__":
                     up = False
                 if event.key == K_i:
                     attack = False
+                if event.key == K_p:
+                    ability = False
 
         screen.blit(background, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
         x_hero, x_origin, y_hero = hero.get_x_y()
-        camera_delta = hero.update(x_origin, y_hero, left, right, up, attack, platforms)  # передвижение
+        camera_delta = hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
         camera.update(hero, camera_delta)  # центризируем камеру относительно персонажа
 
         doctor_mob1.doctor_behaivor(x_hero, y_hero, platforms)
         doctor_mob2.doctor_behaivor(x_hero, y_hero, platforms)
+
+        # _____________________________________-DAMAGE CALCULATING-_______________________________
+
+        hero.give_damage(doctor_mob1.get_tick_damage())
+        hero.give_damage(doctor_mob2.get_tick_damage())
+
+        # _____________________________________-DAMAGE CALCULATING-_______________________________
 
         low_level_mob.low_level_mob_behaivor(x_hero, y_hero, platforms)
         plant_mob.plant_behaivor(x_hero, y_hero, platforms)
@@ -152,6 +163,7 @@ if __name__ == "__main__":
 
         screen.blit(low_level_mob.image, camera.apply(low_level_mob))
         screen.blit(plant_mob.image, camera.apply(plant_mob))
+
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
