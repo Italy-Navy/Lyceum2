@@ -133,7 +133,7 @@ class Doctor(sprite.Sprite):
         boltAnim = []
         for anim in ATTACK_LEFT:
             boltAnim.append((anim, ANIMATION_DELAY))
-        self.boltAttackLeft = pyganim.PygAnimation(boltAnim)
+        self.boltAttackLeft = pyganim.PygAnimation(boltAnim, loop=False)
         self.boltAttackLeft.play()
 
         boltAnim = []
@@ -142,17 +142,19 @@ class Doctor(sprite.Sprite):
         self.boltAttackRight = pyganim.PygAnimation(boltAnim)
         self.boltAttackRight.play()
 
-    def doctor_behaivor(self, hero_x, hero_y, platforms):
+    def doctor_behavior(self, hero_x, hero_y, platforms):
         if int(hero_y) - 152 == self.startY and 0 <= int(hero_x) - int(self.rect.x) <= 40 and self.POSITION_RIGHT:
             self.xvel = 0
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = True
             self.boltAttackRight.blit(self.image, (0, 0))
+            #if self.boltIdleRight.getCurrentFrame() ==
         elif int(hero_y) - 152 == self.startY and 0 <= int(self.rect.x) - int(hero_x) <= 10 and not self.POSITION_RIGHT:
             self.xvel = 0
             self.POSITION_RIGHT = False
             self.image.fill(Color(COLOR))
             self.boltAttackLeft.blit(self.image, (0, 0))
+            self.boltAttackLeft.play()
         elif int(hero_y) - 152 == self.startY and 0 <= int(self.rect.x) - int(hero_x) <= 200:
             self.xvel = -MOVE_SPEED  # Лево = x- n
             self.image.fill(Color(COLOR))
@@ -181,7 +183,6 @@ class Doctor(sprite.Sprite):
 
         self.rect.x += self.xvel  # переносим свои положение на xvel
         self.collide(self.xvel, 0, platforms)
-        print(hero_y, hero_x)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
@@ -200,3 +201,5 @@ class Doctor(sprite.Sprite):
                 if yvel < 0:  # если движется вверх
                     self.rect.top = p.rect.bottom  # то не движется вверх
                     self.yvel = 0  # и энергия прыжка пропадает
+
+

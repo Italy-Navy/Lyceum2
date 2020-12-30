@@ -57,12 +57,6 @@ def attack_camera_left(rectangle, delta):
     return Rect(int(e[0]) + delta, int(e[1]), int(e[2]) + delta, int(e[3]))
 
 
-def get_x_y(s):
-    s = str(s)
-    e = s[6:-2].split(',')
-    return int(e[0]), int(e[1])
-
-
 if __name__ == "__main__":
     pygame.init()  # Инициация PyGame, обязательная строчка
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
@@ -133,11 +127,11 @@ if __name__ == "__main__":
                     attack = False
 
         screen.blit(background, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
-        x_hero, y_hero = get_x_y(hero.rect)
-        camera_delta = hero.update(x_hero, y_hero, left, right, up, attack, platforms)  # передвижение
+        x_hero, x_origin, y_hero = hero.get_x_y()
+        camera_delta = hero.update(x_origin, y_hero, left, right, up, attack, platforms)  # передвижение
         camera.update(hero, camera_delta)  # центризируем камеру относительно персонажа
-        doctor_mob1.doctor_behaivor(x_hero, y_hero, platforms)
-        doctor_mob2.doctor_behaivor(x_hero, y_hero, platforms)
+        doctor_mob1.doctor_behavior(x_hero, y_hero, platforms)
+        doctor_mob2.doctor_behavior(x_hero, y_hero, platforms)
         for element in entities:
             screen.blit(element.image, camera.apply(element))
         screen.blit(hero.image, camera.apply(hero))

@@ -9,6 +9,7 @@ COLOR = "#888888"
 JUMP_POWER = 9
 GRAVITY = 0.35  # Сила, которая будет тянуть нас вниз
 ANIMATION_DELAY = 0.1  # скорость смены кадров
+ANIMATION_DELAY_ATTACK = 0.05  # скорость смены кадров
 ANIMATION_DELAY_JUMP = 0.15  # скорость смены кадров прыжков
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 RUN_RIGHT = [
@@ -121,6 +122,7 @@ class Player(sprite.Sprite):
         self.startX = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
         self.startY = y
         self.POSITION_RIGHT = True
+        self.attack = False
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
         self.flag_attack_left = False
@@ -168,31 +170,32 @@ class Player(sprite.Sprite):
 
         boltAnim = []
         for anim in ATTACK_RIGHT:
-            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+            boltAnim.append((anim, ANIMATION_DELAY_ATTACK))
         self.boltAttackRight = pyganim.PygAnimation(boltAnim)
         self.boltAttackRight.play()
 
         boltAnim = []
         for anim in ATTACK_LEFT:
-            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+            boltAnim.append((anim, ANIMATION_DELAY_ATTACK))
         self.boltAttackLeft = pyganim.PygAnimation(boltAnim)
         self.boltAttackLeft.play()
 
         boltAnim = []
         for anim in CROUCH_RIGHT:
-            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+            boltAnim.append((anim, ANIMATION_DELAY))
         self.boltCrouchRight = pyganim.PygAnimation(boltAnim)
         self.boltCrouchRight.play()
 
         boltAnim = []
         for anim in CROUCH_LEFT:
-            boltAnim.append((anim, ANIMATION_DELAY_JUMP))
+            boltAnim.append((anim, ANIMATION_DELAY))
         self.boltCrouchLeft = pyganim.PygAnimation(boltAnim)
         self.boltCrouchLeft.play()
 
     def update(self, x, y, left, right, up, attack, platforms):
+        self.attack = attack
         if self.flag_attack_left and not attack:
-            self.rect = Rect(x + 30, y, WIDTH, HEIGHT)  # прямоугольный объект
+            self.rect = Rect(int(x + 30), int(y), int(WIDTH), int(HEIGHT))  # прямоугольный объект
             self.flag_attack_left = False
             self.return_update = 0
 
@@ -270,3 +273,11 @@ class Player(sprite.Sprite):
                 if yvel < 0:  # если движется вверх
                     self.rect.top = p.rect.bottom  # то не движется вверх
                     self.yvel = 0  # и энергия прыжка пропадает
+
+    def get_x_y(self):
+        s = str(self.rect)
+        s_arr = s[6:-2].split(',')
+        x_sr = (int(s_arr[0]) + int(s_arr[0])) / 2
+        if self.flag_attack_left and self.attack:
+            x_sr += 30
+        return int(x_sr), int(s_arr[0]), int(s_arr[1])
