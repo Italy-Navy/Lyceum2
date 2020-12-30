@@ -89,7 +89,7 @@ class Plant(sprite.Sprite):
         self.boltAttackRight = pyganim.PygAnimation(boltAnim)
         self.boltAttackRight.play()
 
-    def plant_behaivor(self, hero_x, hero_y, platforms):
+    def plant_behavior(self, hero_x, hero_y, platforms):
         if int(hero_y) - 172 == self.startY and -20 <= int(hero_x) - int(self.rect.x) <= 0:
             self.xvel = 0
             self.image.fill(Color(COLOR))

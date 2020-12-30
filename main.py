@@ -4,6 +4,9 @@ from blocks import *
 from hero import *
 from Low_level_mob import *
 from Plant import *
+from NPC_Worm import *
+from Wizard import *
+from Fireball import *
 
 # Объявляем переменные
 WIN_WIDTH = 1280  # Ширина создаваемого окна
@@ -72,6 +75,8 @@ if __name__ == "__main__":
     doctor_mob2 = Doctor(550, 500)
     low_level_mob = LowLevelMob(750, 500)
     plant_mob = Plant(250, 400)
+    npc_worm = Worm(100, 400)
+    wizard_mob = Wizard(110, 400)
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
 
@@ -82,6 +87,8 @@ if __name__ == "__main__":
     entities.add(doctor_mob2)
     entities.add(low_level_mob)
     entities.add(plant_mob)
+    entities.add(npc_worm)
+    entities.add(wizard_mob)
 
     clock = pygame.time.Clock()
     x = y = 0
@@ -107,6 +114,7 @@ if __name__ == "__main__":
     camera = Camera(camera_configure, total_level_width, total_level_height)
 
     running = True
+    use_fireball = True
     while running:  # Основной цикл программы
         clock.tick(FPS)
         for event in pygame.event.get():  # Обрабатываем события
@@ -141,8 +149,8 @@ if __name__ == "__main__":
         camera_delta = hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
         camera.update(hero, camera_delta)  # центризируем камеру относительно персонажа
 
-        doctor_mob1.doctor_behaivor(x_hero, y_hero, platforms)
-        doctor_mob2.doctor_behaivor(x_hero, y_hero, platforms)
+        doctor_mob1.doctor_behavior(x_hero, y_hero, platforms)
+        doctor_mob2.doctor_behavior(x_hero, y_hero, platforms)
 
         # _____________________________________-DAMAGE CALCULATING-_______________________________
 
@@ -151,8 +159,17 @@ if __name__ == "__main__":
 
         # _____________________________________-DAMAGE CALCULATING-_______________________________
 
-        low_level_mob.low_level_mob_behaivor(x_hero, y_hero, platforms)
-        plant_mob.plant_behaivor(x_hero, y_hero, platforms)
+        low_level_mob.low_level_mob_behavior(x_hero, y_hero, platforms)
+        plant_mob.plant_behavior(x_hero, y_hero, platforms)
+        npc_worm.worm_behavior(x_hero, y_hero, platforms)
+
+        use_fireball = wizard_mob.wizard_behavior(x_hero, y_hero, platforms)
+        if use_fireball:
+            spawn_x, spawn_y, position_right = wizard_mob.information_for_fireball()
+            fireball = Fireball(spawn_x, spawn_y)
+            entities.add(fireball)
+            fireball.fireball_behavior(spawn_x, spawn_y, platforms, position_right)
+            screen.blit(fireball.image, camera.apply(fireball))
 
         for element in entities:
             screen.blit(element.image, camera.apply(element))
@@ -164,6 +181,9 @@ if __name__ == "__main__":
         screen.blit(low_level_mob.image, camera.apply(low_level_mob))
         screen.blit(plant_mob.image, camera.apply(plant_mob))
 
+        screen.blit(npc_worm.image, camera.apply(npc_worm))
+
+        screen.blit(wizard_mob.image, camera.apply(wizard_mob))
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()

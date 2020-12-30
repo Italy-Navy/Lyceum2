@@ -156,7 +156,7 @@ class Doctor(sprite.Sprite):
         self.attack_time = self.boltAttackLeft.startTimes[-1]  # Брать из метода _startTimes текущей анимаци
         self.attack_flag = False
 
-    def doctor_behaivor(self, hero_x, hero_y, platforms):
+    def doctor_behavior(self, hero_x, hero_y, platforms):
         # ____________________________________________________________________________________________________________________
 
         if -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(hero_x) - int(self.rect.x) <= 40 \

@@ -157,7 +157,7 @@ class LowLevelMob(sprite.Sprite):
         self.boltAttackRight = pyganim.PygAnimation(boltAnim)
         self.boltAttackRight.play()
 
-    def low_level_mob_behaivor(self, hero_x, hero_y, platforms):
+    def low_level_mob_behavior(self, hero_x, hero_y, platforms):
         if -50 <= int(hero_y) + 15 - self.rect.y <= 50 and 0 <= int(hero_x) - int(self.rect.x) <= 20 and self.POSITION_RIGHT:
             self.xvel = 0
             self.image.fill(Color(COLOR))
