@@ -2,11 +2,11 @@ from pygame import *
 import playanim as pyganim
 import os
 
-MOVE_SPEED = 5
+MOVE_SPEED = 4
 WIDTH = 51
 HEIGHT = 48
 COLOR = "#888888"
-JUMP_POWER = 9
+JUMP_POWER = 7
 GRAVITY = 0.35  # Сила, которая будет тянуть нас вниз
 ANIMATION_DELAY = 0.1  # скорость смены кадров
 ANIMATION_DELAY_ATTACK = 0.05  # скорость смены кадров
@@ -171,14 +171,12 @@ class Player(sprite.Sprite):
         boltAnim = []
         for anim in ATTACK_RIGHT:
             boltAnim.append((anim, ANIMATION_DELAY_ATTACK))
-        self.boltAttackRight = pyganim.PygAnimation(boltAnim)
-        self.boltAttackRight.play()
+        self.boltAttackRight = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
         for anim in ATTACK_LEFT:
             boltAnim.append((anim, ANIMATION_DELAY_ATTACK))
-        self.boltAttackLeft = pyganim.PygAnimation(boltAnim)
-        self.boltAttackLeft.play()
+        self.boltAttackLeft = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
         for anim in CROUCH_RIGHT:
@@ -239,12 +237,14 @@ class Player(sprite.Sprite):
             self.image.fill(Color(COLOR))
             if self.POSITION_RIGHT:
                 self.boltAttackRight.blit(self.image, (0, 0))
+                self.boltAttackRight.play()
             else:
                 if not self.flag_attack_left:
                     self.xvel -= 30
                     self.flag_attack_left = True
                     self.return_update = 30
                 self.boltAttackLeft.blit(self.image, (0, 0))
+                self.boltAttackLeft.play()
 
         if not self.onGround:
             self.yvel += GRAVITY

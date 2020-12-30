@@ -134,33 +134,33 @@ class Doctor(sprite.Sprite):
         for anim in ATTACK_LEFT:
             boltAnim.append((anim, ANIMATION_DELAY))
         self.boltAttackLeft = pyganim.PygAnimation(boltAnim, loop=False)
-        self.boltAttackLeft.play()
 
         boltAnim = []
         for anim in ATTACK_RIGHT:
             boltAnim.append((anim, ANIMATION_DELAY))
-        self.boltAttackRight = pyganim.PygAnimation(boltAnim)
-        self.boltAttackRight.play()
+        self.boltAttackRight = pyganim.PygAnimation(boltAnim, loop=False)
 
-    def doctor_behavior(self, hero_x, hero_y, platforms):
-        if int(hero_y) - 152 == self.startY and 0 <= int(hero_x) - int(self.rect.x) <= 40 and self.POSITION_RIGHT:
+    def doctor_behaivor(self, hero_x, hero_y, platforms):
+        if -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(hero_x) - int(self.rect.x) <= 40 \
+                and self.POSITION_RIGHT:
             self.xvel = 0
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = True
             self.boltAttackRight.blit(self.image, (0, 0))
-            #if self.boltIdleRight.getCurrentFrame() ==
-        elif int(hero_y) - 152 == self.startY and 0 <= int(self.rect.x) - int(hero_x) <= 10 and not self.POSITION_RIGHT:
+            self.boltAttackRight.play()
+        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 10 \
+                and not self.POSITION_RIGHT:
             self.xvel = 0
             self.POSITION_RIGHT = False
             self.image.fill(Color(COLOR))
             self.boltAttackLeft.blit(self.image, (0, 0))
             self.boltAttackLeft.play()
-        elif int(hero_y) - 152 == self.startY and 0 <= int(self.rect.x) - int(hero_x) <= 200:
+        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 200:
             self.xvel = -MOVE_SPEED  # Лево = x- n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = False
             self.boltRunLeft.blit(self.image, (0, 0))
-        elif int(hero_y) - 152 == self.startY and 0 <= abs(int(hero_x) - int(self.rect.x)) <= 200:
+        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= abs(int(hero_x) - int(self.rect.x)) <= 200:
             self.xvel = MOVE_SPEED  # Право = x + n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = True
@@ -201,5 +201,3 @@ class Doctor(sprite.Sprite):
                 if yvel < 0:  # если движется вверх
                     self.rect.top = p.rect.bottom  # то не движется вверх
                     self.yvel = 0  # и энергия прыжка пропадает
-
-
