@@ -104,6 +104,18 @@ CROUCH_LEFT = [
     ('%s/data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
 ]
 
+DIE_RIGHT = [
+    ('%s/data/animations/Main_Hero/die_r/1.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/die_r/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/die_r/3.png' % ICON_DIR),
+]
+
+DIE_LEFT = [
+    ('%s/data/animations/Main_Hero/die_l/1.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/die_l/2.png' % ICON_DIR),
+    ('%s/data/animations/Main_Hero/die_l/3.png' % ICON_DIR),
+]
+
 
 class Player(sprite.Sprite):
     def __init__(self, x, y):
@@ -123,7 +135,8 @@ class Player(sprite.Sprite):
         self.ANIMATION_DELAY = 0.1  # скорость смены кадров
         self.ANIMATION_DELAY_ATTACK = 0.15  # скорость смены кадров
         self.ANIMATION_DELAY_JUMP = 0.15  # скорость смены кадров прыжков
-        self.ANIMATION_DELAY_CROUCH = 0.3
+        self.ANIMATION_DELAY_CROUCH = 0.1
+        self.ANIMATION_DELAY_DIE = 0.35
 
         # _________________________________-FLAG-_________________________________
 
@@ -212,6 +225,22 @@ class Player(sprite.Sprite):
         self.boltCrouchLeft = pyganim.PygAnimation(boltAnim, loop=False)
         self.boltCrouchLeft.play()
 
+        boltAnim = []
+        for anim in CROUCH_LEFT:
+            boltAnim.append((anim, self.ANIMATION_DELAY_CROUCH))
+        self.boltCrouchLeft = pyganim.PygAnimation(boltAnim, loop=False)
+        self.boltCrouchLeft.play()
+
+        boltAnim = []
+        for anim in DIE_RIGHT:
+            boltAnim.append((anim, self.ANIMATION_DELAY_DIE))
+        self.boltDieRight = pyganim.PygAnimation(boltAnim, loop=False)
+
+        boltAnim = []
+        for anim in DIE_LEFT:
+            boltAnim.append((anim, self.ANIMATION_DELAY_DIE))
+        self.boltDieLeft = pyganim.PygAnimation(boltAnim, loop=False)
+
     def update(self, x, y, left, right, up, key_attack, ability, platforms):
         self.hero_attack = key_attack
         if self.flag_attack_left and not key_attack:
@@ -278,6 +307,15 @@ class Player(sprite.Sprite):
         else:
             self.flag_ability = True
 
+        if self.now_health_points <= 0:
+            self._all_stop()
+            if self.POSITION_RIGHT:
+                self.boltDieRight.blit(self.image, (0, 0))
+                self.boltDieRight.play()
+            else:
+                self.boltDieLeft.blit(self.image, (0, 0))
+                self.boltDieLeft.play()
+
         if not self.onGround:
             self.yvel += self.GRAVITY
 
@@ -305,6 +343,19 @@ class Player(sprite.Sprite):
                 if yvel < 0:  # если движется вверх
                     self.rect.top = p.rect.bottom  # то не движется вверх
                     self.yvel = 0  # и энергия прыжка пропадает
+
+    def _all_stop(self):
+        self.boltJumpLeft.stop()
+        self.boltCrouchLeft.stop()
+        self.boltRunLeft.stop()
+        self.boltIdleLeft.stop()
+        self.boltAttackLeft.stop()
+
+        self.boltAttackRight.stop()
+        self.boltCrouchRight.stop()
+        self.boltIdleRight.stop()
+        self.boltJumpRight.stop()
+        self.boltRunRight.stop()
 
     def get_x_y(self):
         s = str(self.rect)
