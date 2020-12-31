@@ -87,7 +87,7 @@ class Doctor(sprite.Sprite):
         # ____________________-DEMONS FEATURES-___________________________
 
         self.health_points = 200
-        self.damage = 70
+        self.damage = 20
 
         # ____________________-DEMONS FEATURES-___________________________
 

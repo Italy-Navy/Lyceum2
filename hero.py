@@ -112,7 +112,8 @@ class Player(sprite.Sprite):
         self.MOVE_SPEED = 4
         self.JUMP_POWER = 7
         self.GRAVITY = 0.35  # Сила, которая будет тянуть нас вниз
-        self.health_points = 250
+        self.now_health_points = 250
+        self.max_health_points = self.now_health_points
 
         # ____________________________-HERO FEATURES-______________________________
 
@@ -314,10 +315,9 @@ class Player(sprite.Sprite):
         return int(x_sr), int(s_arr[0]), int(s_arr[1])
 
     def give_damage(self, value):
-        print(self.health_points)
         if value != 0:
             self.image.fill(Color(COLOR))
-            self.health_points -= value
+            self.now_health_points -= value
             if self.POSITION_RIGHT:
                 self.boltCrouchRight.blit(self.image, (0, 10))
                 self.boltCrouchRight.play()
@@ -326,3 +326,6 @@ class Player(sprite.Sprite):
                 self.boltCrouchLeft.blit(self.image, (0, 10))
                 self.boltCrouchLeft.play()
                 self.on_attack = True
+
+    def get_hp(self):
+        return self.now_health_points, self.max_health_points

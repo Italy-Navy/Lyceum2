@@ -7,6 +7,7 @@ from Plant import *
 from NPC_Worm import *
 from Wizard import *
 from Fireball import *
+from hero_hp import *
 
 # Объявляем переменные
 WIN_WIDTH = 1280  # Ширина создаваемого окна
@@ -77,19 +78,13 @@ if __name__ == "__main__":
     plant_mob = Plant(250, 400)
     npc_worm = Worm(100, 400)
     wizard_mob = Wizard(110, 400)
+    hero_hp = health_bar(50, 30)
+
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
 
     entities = pygame.sprite.Group()  # Все объекты
     platforms = []  # то, во что мы будем врезаться или опираться
-    entities.add(hero)
-    entities.add(doctor_mob1)
-    entities.add(doctor_mob2)
-    entities.add(low_level_mob)
-    entities.add(plant_mob)
-    entities.add(npc_worm)
-    entities.add(wizard_mob)
-
     clock = pygame.time.Clock()
     x = y = 0
     level = load_level("lvl1.txt")
@@ -107,6 +102,15 @@ if __name__ == "__main__":
             x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
+
+    entities.add(hero)
+    entities.add(doctor_mob1)
+    entities.add(doctor_mob2)
+    entities.add(low_level_mob)
+    entities.add(plant_mob)
+    entities.add(npc_worm)
+    entities.add(wizard_mob)
+    entities.add(hero_hp)
 
     total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
@@ -156,6 +160,8 @@ if __name__ == "__main__":
 
         hero.give_damage(doctor_mob1.get_tick_damage())
         hero.give_damage(doctor_mob2.get_tick_damage())
+        now_hero_hp, max_hero_hp = hero.get_hp()
+        hero_hp.update(int(now_hero_hp), int(max_hero_hp))
 
         # _____________________________________-DAMAGE CALCULATING-_______________________________
 
@@ -169,22 +175,12 @@ if __name__ == "__main__":
             fireball = Fireball(spawn_x, spawn_y)
             entities.add(fireball)
             fireball.fireball_behavior(spawn_x, spawn_y, platforms, position_right)
-            screen.blit(fireball.image, camera.apply(fireball))
+            entities.add(fireball)
 
         for element in entities:
-            screen.blit(element.image, camera.apply(element))
-        screen.blit(hero.image, camera.apply(hero))
-
-        screen.blit(doctor_mob1.image, camera.apply(doctor_mob1))
-        screen.blit(doctor_mob2.image, camera.apply(doctor_mob2))
-
-        screen.blit(low_level_mob.image, camera.apply(low_level_mob))
-        screen.blit(plant_mob.image, camera.apply(plant_mob))
-
-        screen.blit(npc_worm.image, camera.apply(npc_worm))
-
-        screen.blit(wizard_mob.image, camera.apply(wizard_mob))
+           screen.blit(element.image, camera.apply(element))
+        screen.blit(hero_hp.image, camera.apply(hero_hp))
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
-        #print(clock.get_fps())
+        print(clock.get_fps())
