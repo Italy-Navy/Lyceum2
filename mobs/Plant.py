@@ -1,5 +1,5 @@
 from pygame import *
-import playanim as pyganim
+from hero import playanim as pyganim
 import os
 
 MOVE_SPEED = 1
@@ -11,42 +11,42 @@ ANIMATION_DELAY = 0.1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 
 IDLE = [
-    ('%s/data/animations/plant/idle/1.png' % ICON_DIR),
-    ('%s/data/animations/plant/idle/2.png' % ICON_DIR),
-    ('%s/data/animations/plant/idle/3.png' % ICON_DIR),
-    ('%s/data/animations/plant/idle/4.png' % ICON_DIR),
-    ('%s/data/animations/plant/idle/5.png' % ICON_DIR),
-    ('%s/data/animations/plant/idle/6.png' % ICON_DIR),
-    ('%s/data/animations/plant/idle/7.png' % ICON_DIR),
-    ('%s/data/animations/plant/idle/8.png' % ICON_DIR)
+    ('%s/../data/animations/plant/idle/1.png' % ICON_DIR),
+    ('%s/../data/animations/plant/idle/2.png' % ICON_DIR),
+    ('%s/../data/animations/plant/idle/3.png' % ICON_DIR),
+    ('%s/../data/animations/plant/idle/4.png' % ICON_DIR),
+    ('%s/../data/animations/plant/idle/5.png' % ICON_DIR),
+    ('%s/../data/animations/plant/idle/6.png' % ICON_DIR),
+    ('%s/../data/animations/plant/idle/7.png' % ICON_DIR),
+    ('%s/../data/animations/plant/idle/8.png' % ICON_DIR)
 ]
 
 HIT = [
-    ('%s/data/animations/plant/hit/1.png' % ICON_DIR),
-    ('%s/data/animations/plant/hit/2.png' % ICON_DIR),
-    ('%s/data/animations/plant/hit/3.png' % ICON_DIR)
+    ('%s/../data/animations/plant/hit/1.png' % ICON_DIR),
+    ('%s/../data/animations/plant/hit/2.png' % ICON_DIR),
+    ('%s/../data/animations/plant/hit/3.png' % ICON_DIR)
 ]
 
 ATTACK_LEFT = [
-    ('%s/data/animations/plant/attack_left/1.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_left/2.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_left/3.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_left/4.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_left/5.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_left/6.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_left/7.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_left/8.png' % ICON_DIR)
+    ('%s/../data/animations/plant/attack_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_left/8.png' % ICON_DIR)
 ]
 
 ATTACK_RIGHT = [
-    ('%s/data/animations/plant/attack_right/1.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_right/2.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_right/3.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_right/4.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_right/5.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_right/6.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_right/7.png' % ICON_DIR),
-    ('%s/data/animations/plant/attack_right/8.png' % ICON_DIR)
+    ('%s/../data/animations/plant/attack_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/plant/attack_right/8.png' % ICON_DIR)
 ]
 
 

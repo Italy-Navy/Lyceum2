@@ -1,6 +1,5 @@
-import pygame
 from pygame import *
-import playanim as pyganim
+from hero import playanim as pyganim
 import os
 from random import randint
 
@@ -12,73 +11,74 @@ GRAVITY = 0.35
 ANIMATION_DELAY = 0.1  # скорость смены кадров
 ANIMATION_DELAY_ATTACK = 0.1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
+
 RUN_RIGHT = [
-    ('%s/data/animations/doctor/movement_right/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_right/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_right/3.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_right/4.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_right/5.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_right/6.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/movement_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_right/6.png' % ICON_DIR)
 ]
 
 RUN_LEFT = [
-    ('%s/data/animations/doctor/movement_left/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_left/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_left/3.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_left/4.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_left/5.png' % ICON_DIR),
-    ('%s/data/animations/doctor/movement_left/6.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/movement_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/movement_left/6.png' % ICON_DIR)
 ]
 
 IDLE_RIGHT = [
-    ('%s/data/animations/doctor/idle_right/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_right/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_right/3.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_right/4.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_right/5.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_right/6.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_right/7.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/idle_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_right/7.png' % ICON_DIR)
 ]
 
 IDLE_LEFT = [
-    ('%s/data/animations/doctor/idle_left/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_left/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_left/3.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_left/4.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_left/5.png' % ICON_DIR),
-    ('%s/data/animations/doctor/idle_left/6.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/idle_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/idle_left/6.png' % ICON_DIR)
 ]
 
 HIT_RIGHT = [
-    ('%s/data/animations/doctor/hit_right/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/hit_right/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/hit_right/3.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/hit_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/hit_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/hit_right/3.png' % ICON_DIR)
 ]
 
 HIT_LEFT = [
-    ('%s/data/animations/doctor/hit_left/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/hit_left/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/hit_left/3.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/hit_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/hit_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/hit_left/3.png' % ICON_DIR)
 ]
 
 ATTACK_LEFT = [
-    ('%s/data/animations/doctor/attack_left/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_left/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_left/3.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_left/4.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_left/5.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_left/6.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_left/7.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/attack_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_left/7.png' % ICON_DIR)
 ]
 
 ATTACK_RIGHT = [
-    ('%s/data/animations/doctor/attack_right/1.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_right/2.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_right/3.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_right/4.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_right/5.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_right/6.png' % ICON_DIR),
-    ('%s/data/animations/doctor/attack_right/7.png' % ICON_DIR)
+    ('%s/../data/animations/doctor/attack_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/doctor/attack_right/7.png' % ICON_DIR)
 ]
 
 

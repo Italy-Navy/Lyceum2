@@ -1,5 +1,5 @@
 from pygame import *
-import playanim as pyganim
+from hero import playanim as pyganim
 import os
 
 MOVE_SPEED = 10
@@ -10,9 +10,9 @@ GRAVITY = 0.35
 ANIMATION_DELAY = 0.1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 RUN = [
-    ('%s/data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/fireball_sprite/1.png' % ICON_DIR)
+    ('%s/../data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/fireball_sprite/1.png' % ICON_DIR)
 ]
 
 

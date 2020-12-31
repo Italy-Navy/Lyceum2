@@ -1,5 +1,5 @@
 from pygame import *
-import playanim as pyganim
+from hero import playanim as pyganim
 import os
 
 MOVE_SPEED = 1
@@ -10,87 +10,87 @@ GRAVITY = 0.35
 ANIMATION_DELAY = 0.1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 RUN_RIGHT = [
-    ('%s/data/animations/low_level_mob/movement_right/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_right/2.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_right/3.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_right/4.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_right/5.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_right/6.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_right/7.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_right/8.png' % ICON_DIR)
+    ('%s/../data/animations/low_level_mob/movement_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_right/8.png' % ICON_DIR)
 ]
 
 RUN_LEFT = [
-    ('%s/data/animations/low_level_mob/movement_left/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_left/2.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_left/3.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_left/4.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_left/5.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_left/6.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_left/7.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/movement_left/8.png' % ICON_DIR)
+    ('%s/../data/animations/low_level_mob/movement_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/movement_left/8.png' % ICON_DIR)
 ]
 
 IDLE_RIGHT = [
-    ('%s/data/animations/low_level_mob/idle_right/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/2.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/3.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/4.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/5.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/6.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/7.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/8.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/9.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/10.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_right/11.png' % ICON_DIR)
+    ('%s/../data/animations/low_level_mob/idle_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/9.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/10.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_right/11.png' % ICON_DIR)
 ]
 
 IDLE_LEFT = [
-    ('%s/data/animations/low_level_mob/idle_left/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/2.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/3.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/4.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/5.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/6.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/7.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/8.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/9.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/10.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/idle_left/11.png' % ICON_DIR)
+    ('%s/../data/animations/low_level_mob/idle_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/10.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/idle_left/11.png' % ICON_DIR)
 ]
 
 HIT_RIGHT = [
-    ('%s/data/animations/low_level_mob/hit_right/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/hit_right/2.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/hit_right/3.png' % ICON_DIR)
+    ('%s/../data/animations/low_level_mob/hit_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/hit_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/hit_right/3.png' % ICON_DIR)
 ]
 
 HIT_LEFT = [
-    ('%s/data/animations/low_level_mob/hit_left/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/hit_left/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/hit_left/1.png' % ICON_DIR)
+    ('%s/../data/animations/low_level_mob/hit_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/hit_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/hit_left/1.png' % ICON_DIR)
 ]
 
 ATTACK_LEFT = [
-    ('%s/data/animations/low_level_mob/attack_left/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_left/2.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_left/3.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_left/4.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_left/5.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_left/6.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_left/7.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_left/8.png' % ICON_DIR)
+    ('%s/../data/animations/low_level_mob/attack_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_left/8.png' % ICON_DIR)
 ]
 
 ATTACK_RIGHT = [
-    ('%s/data/animations/low_level_mob/attack_right/1.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_right/2.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_right/3.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_right/4.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_right/5.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_right/6.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_right/7.png' % ICON_DIR),
-    ('%s/data/animations/low_level_mob/attack_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/low_level_mob/attack_right/8.png' % ICON_DIR),
 ]
 
 

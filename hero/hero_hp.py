@@ -10,17 +10,9 @@ HEIGHT = 100
 COLOR = "#888888"
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 
-HEALTH_POINT = [
-    ('%s/data/animations/Bar/health_point.png' % ICON_DIR),
-]
-
-HEALTH_BAR = [
-    ('%s/data/animations/Bar/health_bar.png' % ICON_DIR),
-]
-
 
 def load_image(name, colorkey=None):
-    fullname = os.path.join('data/animations/Bar/', name)
+    fullname = os.path.join(("%s/../../data/animations/Bar/" % __file__), name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")

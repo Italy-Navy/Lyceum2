@@ -1,7 +1,4 @@
-from pygame import *
-import playanim as pyganim
-import os
-from Fireball import *
+from mobs.Fireball import *
 
 MOVE_SPEED = 1
 WIDTH = 15
@@ -11,52 +8,52 @@ GRAVITY = 0.35
 ANIMATION_DELAY = 0.1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 IDLE_RIGHT = [
-    ('%s/data/animations/wizard/idle_right/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_right/2.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_right/3.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_right/4.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_right/5.png' % ICON_DIR)
+    ('%s/../data/animations/wizard/idle_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_right/5.png' % ICON_DIR)
 ]
 
 IDLE_LEFT = [
-    ('%s/data/animations/wizard/idle_left/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_left/2.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_left/3.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_left/4.png' % ICON_DIR),
-    ('%s/data/animations/wizard/idle_left/5.png' % ICON_DIR)
+    ('%s/../data/animations/wizard/idle_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/idle_left/5.png' % ICON_DIR)
 ]
 
 
 ATTACK_LEFT = [
-    ('%s/data/animations/wizard/attack_left/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/2.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/3.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/4.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/5.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/6.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/7.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/8.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/9.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_left/10.png' % ICON_DIR)
+    ('%s/../data/animations/wizard/attack_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_left/10.png' % ICON_DIR)
 ]
 
 ATTACK_RIGHT = [
-    ('%s/data/animations/wizard/attack_right/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/2.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/3.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/4.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/5.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/6.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/7.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/8.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/9.png' % ICON_DIR),
-    ('%s/data/animations/wizard/attack_right/10.png' % ICON_DIR)
+    ('%s/../data/animations/wizard/attack_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/9.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/attack_right/10.png' % ICON_DIR)
 ]
 
 FIREBALL = [
-    ('%s/data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
-    ('%s/data/animations/wizard/fireball_sprite/1.png' % ICON_DIR)
+    ('%s/../data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/fireball_sprite/1.png' % ICON_DIR),
+    ('%s/../data/animations/wizard/fireball_sprite/1.png' % ICON_DIR)
 ]
 
 

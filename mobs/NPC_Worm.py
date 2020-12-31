@@ -1,5 +1,5 @@
 from pygame import *
-import playanim as pyganim
+from hero import playanim as pyganim
 import os
 
 MOVE_SPEED = 1
@@ -10,51 +10,51 @@ GRAVITY = 0.35
 ANIMATION_DELAY = 0.1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 RUN = [
-    ('%s/data/animations/npc_worm/movement/1.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/movement/2.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/movement/3.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/movement/4.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/movement/5.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/movement/6.png' % ICON_DIR)
+    ('%s/../data/animations/npc_worm/movement/1.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/movement/2.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/movement/3.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/movement/4.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/movement/5.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/movement/6.png' % ICON_DIR)
 ]
 
 IDLE_RIGHT = [
-    ('%s/data/animations/npc_worm/idle_right/1.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/2.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/3.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/4.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/5.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/6.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/7.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/8.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_right/9.png' % ICON_DIR)
+    ('%s/../data/animations/npc_worm/idle_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_right/9.png' % ICON_DIR)
 ]
 
 IDLE_LEFT = [
-    ('%s/data/animations/npc_worm/idle_left/1.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/2.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/3.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/4.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/5.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/6.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/7.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/8.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/idle_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/idle_left/9.png' % ICON_DIR),
 ]
 
 HIT = [
-    ('%s/data/animations/npc_worm/hit/1.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/hit/2.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/hit/3.png' % ICON_DIR)
+    ('%s/../data/animations/npc_worm/hit/1.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/hit/2.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/hit/3.png' % ICON_DIR)
 ]
 
 ATTACK = [
-    ('%s/data/animations/npc_worm/attack/1.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/attack/2.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/attack/3.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/attack/4.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/attack/5.png' % ICON_DIR),
-    ('%s/data/animations/npc_worm/attack/6.png' % ICON_DIR)
+    ('%s/../data/animations/npc_worm/attack/1.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/attack/2.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/attack/3.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/attack/4.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/attack/5.png' % ICON_DIR),
+    ('%s/../data/animations/npc_worm/attack/6.png' % ICON_DIR)
 ]
 
 

@@ -1,119 +1,121 @@
 from pygame import *
-import playanim as pyganim
+from hero import playanim as pyganim
 import os
 
 COLOR = "#888888"
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
+
 RUN_RIGHT = [
-    ('%s/data/animations/Main_Hero/run_r/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/5.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/6.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/7.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/8.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/9.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/10.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/11.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_r/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_r/12.png' % ICON_DIR),
 ]
 
+
 RUN_LEFT = [
-    ('%s/data/animations/Main_Hero/run_l/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/5.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/6.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/7.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/8.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/9.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/10.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/11.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/run_l/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_l/12.png' % ICON_DIR),
 ]
 
 IDLE_RIGHT = [
-    ('%s/data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_r/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_r/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_r/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
 ]
 
 IDLE_LEFT = [
-    ('%s/data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_l/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_l/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_l/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
 ]
 
 JUMP_RIGHT = [
-    ('%s/data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_r/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_r/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_r/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_r/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_r/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_r/5.png' % ICON_DIR),
 ]
 
 JUMP_LEFT = [
-    ('%s/data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_l/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_l/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/jump_l/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_l/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_l/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_l/5.png' % ICON_DIR),
 ]
 
 ATTACK_RIGHT = [
-    ('%s/data/animations/Main_Hero/attack_r/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_r/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_r/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_r/5.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_r/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_r/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_r/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_r/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_r/6.png' % ICON_DIR),
 ]
 
 ATTACK_LEFT = [
-    ('%s/data/animations/Main_Hero/attack_l/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_l/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_l/4.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_l/5.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/attack_l/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_l/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_l/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_l/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_l/6.png' % ICON_DIR),
 ]
 
 CROUCH_RIGHT = [
-    ('%s/data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_r/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_r/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
 ]
 
 CROUCH_LEFT = [
-    ('%s/data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_l/3.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_l/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
 ]
 
 DIE_RIGHT = [
-    ('%s/data/animations/Main_Hero/die_r/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/die_r/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/die_r/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/die_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/die_r/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/die_r/3.png' % ICON_DIR),
 ]
 
 DIE_LEFT = [
-    ('%s/data/animations/Main_Hero/die_l/1.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/die_l/2.png' % ICON_DIR),
-    ('%s/data/animations/Main_Hero/die_l/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/die_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/die_l/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/die_l/3.png' % ICON_DIR),
 ]
 
 
@@ -380,3 +382,8 @@ class Player(sprite.Sprite):
 
     def get_hp(self):
         return self.now_health_points, self.max_health_points
+
+    def flag_to_stop(self):
+        if self.now_health_points <= 0:
+            return True
+        return False
