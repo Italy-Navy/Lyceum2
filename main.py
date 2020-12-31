@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # будем использовать как фон
     background.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
 
-    hero = Player(100, 30)  # создаем героя по (x,y) координатам
+    hero = Player(100, 500)  # создаем героя по (x,y) координатам
     doctor_mob1 = Doctor(350, 500)
     doctor_mob2 = Doctor(550, 500)
     low_level_mob = LowLevelMob(750, 500)
@@ -161,7 +161,7 @@ if __name__ == "__main__":
         hero.give_damage(doctor_mob1.get_tick_damage())
         hero.give_damage(doctor_mob2.get_tick_damage())
         now_hero_hp, max_hero_hp = hero.get_hp()
-        hero_hp.update(int(now_hero_hp), int(max_hero_hp))
+        hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
         # _____________________________________-DAMAGE CALCULATING-_______________________________
 
@@ -178,9 +178,9 @@ if __name__ == "__main__":
             entities.add(fireball)
 
         for element in entities:
-           screen.blit(element.image, camera.apply(element))
+            screen.blit(element.image, camera.apply(element))
         screen.blit(hero_hp.image, camera.apply(hero_hp))
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
-        #print(clock.get_fps())
+        # print(clock.get_fps())

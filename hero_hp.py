@@ -46,7 +46,7 @@ class health_bar(sprite.Sprite):
         self.max_hero_hp = 150
         self.now_hero_hp = 150
 
-    def update(self, now_hp, max_hp):
+    def update(self, now_hp, max_hp, camera_x):
         self.image.fill(Color(COLOR))
         number_hp = int((now_hp / max_hp * 100) / 1.847)
         base_x_h_point = 80
@@ -54,3 +54,4 @@ class health_bar(sprite.Sprite):
             self.image.blit(pygame.transform.scale(load_image("health_point.png"), (4, 20)), (base_x_h_point, 30))
             base_x_h_point += 4
         self.image.blit(pygame.transform.scale(load_image("health_bar.png"), (300, 75)), (0, 0))
+        self.rect.x = abs(camera_x) + 40

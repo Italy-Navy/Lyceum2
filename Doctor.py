@@ -167,7 +167,7 @@ class Doctor(sprite.Sprite):
             self.boltAttackRight.blit(self.image, (0, 0))
             self.boltAttackRight.play()
 
-            if self.boltAttackRight.elapsed >= self.attack_time and not self.attack_flag:
+            if self.boltAttackRight.elapsed >= self.attack_time - 0.1 and not self.attack_flag:
                 self.boltAttackRight.stop()
                 self.attack_flag = True
                 self.total_damage += randint(self.damage - 6, self.damage + 2)
@@ -182,7 +182,7 @@ class Doctor(sprite.Sprite):
             self.boltAttackLeft.blit(self.image, (0, 0))
             self.boltAttackLeft.play()
 
-            if self.boltAttackLeft.elapsed >= self.attack_time - 0.05 and not self.attack_flag:
+            if self.boltAttackLeft.elapsed >= self.attack_time - 0.1 and not self.attack_flag:
                 self.boltAttackLeft.stop()
                 self.attack_flag = True
                 self.total_damage += randint(self.damage - 6, self.damage + 2)
