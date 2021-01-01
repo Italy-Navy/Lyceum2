@@ -1,6 +1,5 @@
 import json
 
-
 from mobs.Doctor import *
 from environment.blocks import *
 from hero.hero import *
@@ -64,6 +63,19 @@ def attack_camera_left(rectangle, delta):
     return Rect(int(e[0]) + delta, int(e[1]), int(e[2]) + delta, int(e[3]))
 
 
+def battle_music():
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+    json_file_object_music = open("options.json", "r")
+    json_dict_music = json.load(json_file_object_music)
+    json_file_object_music.close()
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+    value = json_dict_music["music_value"] - int(json_dict_music["music_value"] / 2)
+    if randint(1, 1) == 1:
+        pygame.mixer.music.load('%s/../../data/music/battle.mp3' % __file__)
+    pygame.mixer.music.set_volume(value)
+    pygame.mixer.music.play(-1)
+
+
 def DrawLvl():
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
@@ -74,6 +86,9 @@ def DrawLvl():
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     pygame.init()  # Инициация PyGame, обязательная строчка
+
+    battle_music()
+
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Dungeon adventure")  # Пишем в шапку
     background = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
@@ -193,6 +208,7 @@ def DrawLvl():
 
         if hero.flag_to_stop():
             running = False
+            pygame.mixer.music.stop()
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()

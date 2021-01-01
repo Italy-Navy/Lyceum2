@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from random import randint
 
 import pygame
 from pygame import *
@@ -28,6 +29,20 @@ def load_image(name, colorkey=None):
     return LI_image
 
 
+def options_music():
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+    json_file_object_music = open("options.json", "r")
+    json_dict_music = json.load(json_file_object_music)
+    json_file_object_music.close()
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+    if randint(1, 2) == 1:
+        pygame.mixer.music.load('data/music/options_1.mp3')
+    else:
+        pygame.mixer.music.load('data/music/options_2.mp3')
+
+    pygame.mixer.music.set_volume(json_dict_music["music_value"])
+    pygame.mixer.music.play(-1)
+
 def launch_menu():
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
@@ -40,6 +55,9 @@ def launch_menu():
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     pygame.init()  # Инициация PyGame, обязательная строчка
+
+    options_music()
+
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Dungeon adventure")  # Пишем в шапку
     background = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
@@ -71,15 +89,18 @@ def launch_menu():
             if event.type == KEYDOWN:
                 if event.key == K_RETURN:
                     if now_menu == 3:
+                        pygame.mixer.music.pause()
                         # ______________________________________________-Save Changes-_________________________________
                         json_dict["FPS"] = FPS
                         json_dict["music_value"] = Music_Value
                         with open('options.json', 'w') as outfile:
                             json.dump(json_dict, outfile)
                         save_flag = True
+                        options_music()
                         # ______________________________________________-Save Changes-_________________________________
                     if now_menu == 4:
                         running = False
+                        pygame.mixer.music.stop()
                 if event.key == K_DOWN:
                     now_menu += 1
                     FPS_sub = False

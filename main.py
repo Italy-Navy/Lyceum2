@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+from random import randint
 
 import pygame
 from pygame import *
@@ -30,16 +31,35 @@ def load_image(name, colorkey=None):
     return LI_image
 
 
+def menu_music():
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+    json_file_object_music = open("options.json", "r")
+    json_dict_music = json.load(json_file_object_music)
+    json_file_object_music.close()
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+    if randint(1, 2) == 1:
+        pygame.mixer.music.load('data/music/menu_1.mp3')
+    else:
+        pygame.mixer.music.load('data/music/menu_2.mp3')
+
+    pygame.mixer.music.set_volume(json_dict_music["music_value"])
+    pygame.mixer.music.play(-1)
+
+
 if __name__ == "__main__":
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     json_file_object = open("options.json", "r")
     json_dict = json.load(json_file_object)
     FPS = json_dict['FPS']
+    json_file_object.close()
 
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     pygame.init()  # Инициация PyGame, обязательная строчка
+
+    menu_music()
+
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Dungeon adventure")  # Пишем в шапку
     background = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
@@ -66,8 +86,10 @@ if __name__ == "__main__":
                 if event.key == K_RETURN:
                     if now_menu == 1:
                         lvl1.DrawLvl()
+                        menu_music()
                     if now_menu == 2:
                         options.launch_menu()
+                        menu_music()
                     if now_menu == 3:
                         running = False
                 if event.key == K_DOWN:
