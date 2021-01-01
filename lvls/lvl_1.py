@@ -1,4 +1,6 @@
-# Импортируем библиотеку pygame
+import json
+
+
 from mobs.Doctor import *
 from environment.blocks import *
 from hero.hero import *
@@ -17,7 +19,6 @@ BACKGROUND_COLOR = "#000000"
 PLATFORM_WIDTH = 20
 PLATFORM_HEIGHT = 20
 PLATFORM_COLOR = "#FFFFFF"
-FPS = 60
 
 
 def load_level(filename):
@@ -64,6 +65,14 @@ def attack_camera_left(rectangle, delta):
 
 
 def DrawLvl():
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+
+    json_file_object = open("options.json", "r")
+    json_dict = json.load(json_file_object)
+    FPS = json_dict['FPS']
+
+    # __________________________________-DOWNLOAD OPTIONS-________________________________
+
     pygame.init()  # Инициация PyGame, обязательная строчка
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Dungeon adventure")  # Пишем в шапку

@@ -1,4 +1,6 @@
 ## IDE folder
 .idea/
+
+## Some files for develop game
 extra/
-extra/
+base_json.txt
