@@ -96,6 +96,14 @@ if __name__ == "__main__":
                     if now_menu == 2:
                         lvl_menu.lvl_menu()
                         menu_music()
+                        json_file_object = open("options.json", "r")
+                        json_dict = json.load(json_file_object)
+                        FPS = json_dict['FPS']
+                        json_file_object.close()
+                        if json_dict["Save"] is None:
+                            is_save = False
+                        else:
+                            is_save = True
                     if now_menu == 3:
                         options.launch_menu()
                         menu_music()
