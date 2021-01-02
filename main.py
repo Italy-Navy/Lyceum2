@@ -8,6 +8,7 @@ import pygame
 from pygame import *
 
 import option_menu as options
+import lvls.lvl_1 as lvl1
 
 WIN_WIDTH = 1280  # Ширина создаваемого окна
 WIN_HEIGHT = 720  # Высота
@@ -89,6 +90,9 @@ if __name__ == "__main__":
                 running = False
             elif event.type == KEYDOWN:
                 if event.key == K_RETURN:
+                    if now_menu == 1:
+                        if json_dict["last_lvl"] == 1:
+                            lvl1.DrawLvl(json_dict["Save"]["x_hero"], json_dict["Save"]["y_hero"])
                     if now_menu == 2:
                         lvl_menu.lvl_menu()
                         menu_music()

@@ -95,7 +95,16 @@ def battle_music():
     pygame.mixer.music.play(-1)
 
 
-def DrawLvl():
+def save_game(x_hero, y_hero, json_dict):
+    save_dict = dict()
+    save_dict["x_hero"] = x_hero
+    save_dict["y_hero"] = y_hero
+    json_dict["Save"] = save_dict
+    with open('options.json', 'w') as outfile:
+        json.dump(json_dict, outfile)
+
+
+def DrawLvl(x_hero_input=100, y_hero_input=500):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     json_file_object = open("options.json", "r")
@@ -107,14 +116,14 @@ def DrawLvl():
     pygame.init()  # Инициация PyGame, обязательная строчка
 
     battle_music()
-
+    save_flag = False
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Dungeon adventure")  # Пишем в шапку
     background = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
     # будем использовать как фон
     background.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
 
-    hero = Player(100, 500)  # создаем героя по (x,y) координатам
+    hero = Player(x_hero_input, y_hero_input)  # создаем героя по (x,y) координатам
     doctor_mob1 = Doctor(350, 500)
     doctor_mob2 = Doctor(550, 500)
     low_level_mob = LowLevelMob(750, 500)
@@ -212,7 +221,7 @@ def DrawLvl():
                             global_pause = False
                             use_pause = False
                         if pause_menu == 2:
-                            pass
+                            save_flag = True
                         if pause_menu == 3:
                             options.launch_menu()
                             screen.blit(transparent_pause_all, (0, 0))
@@ -306,6 +315,10 @@ def DrawLvl():
             if hero.flag_to_stop():
                 running = False
                 pygame.mixer.music.stop()
+
+        if save_flag:
+            save_game(x_origin, y_hero, json_dict)
+            save_flag = False
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
