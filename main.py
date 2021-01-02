@@ -2,10 +2,11 @@ import os
 import sys
 import json
 from random import randint
+import lvl_menu
 
 import pygame
 from pygame import *
-import lvls.lvl_1 as lvl1
+
 import option_menu as options
 
 WIN_WIDTH = 1280  # Ширина создаваемого окна
@@ -53,6 +54,10 @@ if __name__ == "__main__":
     json_dict = json.load(json_file_object)
     FPS = json_dict['FPS']
     json_file_object.close()
+    if json_dict["Save"] is None:
+        is_save = False
+    else:
+        is_save = True
 
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
@@ -84,23 +89,25 @@ if __name__ == "__main__":
                 running = False
             elif event.type == KEYDOWN:
                 if event.key == K_RETURN:
-                    if now_menu == 1:
-                        lvl1.DrawLvl()
-                        menu_music()
                     if now_menu == 2:
-                        options.launch_menu()
+                        lvl_menu.lvl_menu()
                         menu_music()
                     if now_menu == 3:
+                        options.launch_menu()
+                        menu_music()
+                    if now_menu == 4:
                         running = False
                 if event.key == K_DOWN:
                     now_menu += 1
                 if event.key == K_UP:
                     now_menu -= 1
 
-            if now_menu >= 4:
-                now_menu = 3
-            if now_menu <= 0:
+            if now_menu > 4:
+                now_menu = 4
+            if now_menu < 1:
                 now_menu = 1
+            if not is_save and now_menu == 1:
+                now_menu = 2
 
         screen.blit(pygame.transform.scale(load_image("bg_night_town.png"), (1280, 720)), (0, 0))
 
@@ -108,34 +115,72 @@ if __name__ == "__main__":
         screen.blit(main_label, (310, 50))
 
         if now_menu == 1:
-            Start_label = base_font.render('Start', False, (153, 24, 24))
-            screen.blit(Start_label, (580, 200))
+            if is_save:
+                Start_label = base_font.render('Continue', False, (153, 24, 24))
+                screen.blit(Start_label, (555, 190))
+            else:
+                Start_label = base_font.render('Continue', False, (100, 100, 100))
+                screen.blit(Start_label, (555, 190))
+
+            Start_label = base_font.render('New Game', False, (255, 255, 255))
+            screen.blit(Start_label, (550, 250))
 
             Start_label = base_font.render('Options', False, (255, 255, 255))
-            screen.blit(Start_label, (565, 260))
+            screen.blit(Start_label, (565, 310))
 
             Start_label = base_font.render('Exit', False, (255, 255, 255))
-            screen.blit(Start_label, (590, 320))
+            screen.blit(Start_label, (585, 370))
 
         elif now_menu == 2:
-            Start_label = base_font.render('Start', False, (255, 255, 255))
-            screen.blit(Start_label, (580, 200))
+            if is_save:
+                Start_label = base_font.render('Continue', False, (255, 255, 255))
+                screen.blit(Start_label, (555, 190))
+            else:
+                Start_label = base_font.render('Continue', False, (100, 100, 100))
+                screen.blit(Start_label, (555, 190))
 
-            Start_label = base_font.render('Options', False, (153, 24, 24))
-            screen.blit(Start_label, (565, 260))
-
-            Start_label = base_font.render('Exit', False, (255, 255, 255))
-            screen.blit(Start_label, (590, 320))
-
-        elif now_menu == 3:
-            Start_label = base_font.render('Start', False, (255, 255, 255))
-            screen.blit(Start_label, (580, 200))
+            Start_label = base_font.render('New Game', False, (153, 24, 24))
+            screen.blit(Start_label, (550, 250))
 
             Start_label = base_font.render('Options', False, (255, 255, 255))
-            screen.blit(Start_label, (565, 260))
+            screen.blit(Start_label, (565, 310))
+
+            Start_label = base_font.render('Exit', False, (255, 255, 255))
+            screen.blit(Start_label, (585, 370))
+
+        elif now_menu == 3:
+            if is_save:
+                Start_label = base_font.render('Continue', False, (255, 255, 255))
+                screen.blit(Start_label, (555, 190))
+            else:
+                Start_label = base_font.render('Continue', False, (100, 100, 100))
+                screen.blit(Start_label, (555, 190))
+
+            Start_label = base_font.render('New Game', False, (255, 255, 255))
+            screen.blit(Start_label, (550, 250))
+
+            Start_label = base_font.render('Options', False, (153, 24, 24))
+            screen.blit(Start_label, (565, 310))
+
+            Start_label = base_font.render('Exit', False, (255, 255, 255))
+            screen.blit(Start_label, (585, 370))
+
+        elif now_menu == 4:
+            if is_save:
+                Start_label = base_font.render('Continue', False, (255, 255, 255))
+                screen.blit(Start_label, (555, 190))
+            else:
+                Start_label = base_font.render('Continue', False, (100, 100, 100))
+                screen.blit(Start_label, (555, 190))
+
+            Start_label = base_font.render('New Game', False, (255, 255, 255))
+            screen.blit(Start_label, (550, 250))
+
+            Start_label = base_font.render('Options', False, (255, 255, 255))
+            screen.blit(Start_label, (565, 310))
 
             Start_label = base_font.render('Exit', False, (153, 24, 24))
-            screen.blit(Start_label, (590, 320))
+            screen.blit(Start_label, (585, 370))
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()

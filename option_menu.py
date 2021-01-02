@@ -43,6 +43,7 @@ def options_music():
     pygame.mixer.music.set_volume(json_dict_music["music_value"])
     pygame.mixer.music.play(-1)
 
+
 def launch_menu():
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
@@ -125,6 +126,8 @@ def launch_menu():
                         FPS_sub = True
                     if now_menu == 2:
                         Music_sub = True
+                if event.key == K_ESCAPE:
+                    running = False
 
             if event.type == KEYUP:
                 if event.key == K_RIGHT:

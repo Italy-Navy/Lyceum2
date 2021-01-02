@@ -1,7 +1,7 @@
 import json
 
 from mobs.Doctor import *
-from environment.blocks import *
+from lvls.blocks import *
 from hero.hero import *
 from mobs.Low_level_mob import *
 from mobs.Plant import *
@@ -9,6 +9,7 @@ from mobs.NPC_Worm import *
 from mobs.Wizard import *
 from mobs.Fireball import *
 from hero.hero_hp import *
+from fps_measurement import *
 
 # Объявляем переменные
 WIN_WIDTH = 1280  # Ширина создаваемого окна
@@ -31,6 +32,23 @@ def load_level(filename):
 
     # дополняем каждую строку пустыми клетками ('.')
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+
+
+def load_bg(name, colorkey=None):
+    fullname = os.path.join(("%s/../../data/assets/" % __file__), name)
+    # если файл не существует, то выходим
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    LI_image = pygame.image.load(fullname)
+    if colorkey is not None:
+        LI_image = LI_image.convert()
+        if colorkey == -1:
+            colorkey = LI_image.get_at((0, 0))
+        LI_image.set_colorkey(colorkey)
+    else:
+        LI_image = LI_image.convert_alpha()
+    return LI_image
 
 
 class Camera(object):
@@ -103,6 +121,7 @@ def DrawLvl():
     npc_worm = Worm(100, 400)
     wizard_mob = Wizard(110, 400)
     hero_hp = health_bar(50, 30)
+    fps_label = fps_measure(1200, 30)
 
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
@@ -119,9 +138,6 @@ def DrawLvl():
                 platform = Platform(x, y)
                 entities.add(platform)
                 platforms.append(platform)
-            else:
-                empty = Empty(x, y)
-                entities.add(empty)
 
             x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
         y += PLATFORM_HEIGHT  # то же самое и с высотой
@@ -135,9 +151,12 @@ def DrawLvl():
     entities.add(npc_worm)
     entities.add(wizard_mob)
     entities.add(hero_hp)
+    entities.add(fps_label)
 
     total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
+
+    bg_castle = pygame.transform.scale(load_bg("background_images/bg_tree_2.png"), (1280, 720))
 
     camera = Camera(camera_configure, total_level_width, total_level_height)
 
@@ -172,7 +191,7 @@ def DrawLvl():
                 if event.key == K_p:
                     ability = False
 
-        screen.blit(background, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
+        screen.blit(bg_castle, (0, 0))
         x_hero, x_origin, y_hero = hero.get_x_y()
         camera_delta = hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
         camera.update(hero, camera_delta)  # центризируем камеру относительно персонажа
@@ -193,6 +212,7 @@ def DrawLvl():
         plant_mob.plant_behavior(x_hero, y_hero, platforms)
         npc_worm.worm_behavior(x_hero, y_hero, platforms)
 
+        fps_label.update_fps(int(clock.get_fps()), camera.state.x)
         use_fireball = wizard_mob.wizard_behavior(x_hero, y_hero, platforms)
 
         if use_fireball:
@@ -212,4 +232,3 @@ def DrawLvl():
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
-        # print(clock.get_fps())
