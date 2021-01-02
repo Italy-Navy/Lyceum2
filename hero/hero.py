@@ -120,14 +120,14 @@ DIE_LEFT = [
 
 
 class Player(sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, hero_hp=250):
         # ____________________________-HERO FEATURES-______________________________
 
         self.MOVE_SPEED = 4
         self.JUMP_POWER = 7
         self.GRAVITY = 0.35  # Сила, которая будет тянуть нас вниз
-        self.now_health_points = 250
-        self.max_health_points = self.now_health_points
+        self.now_health_points = hero_hp
+        self.max_health_points = 250
 
         # ____________________________-HERO FEATURES-______________________________
 

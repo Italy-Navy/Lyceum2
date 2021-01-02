@@ -95,16 +95,17 @@ def battle_music():
     pygame.mixer.music.play(-1)
 
 
-def save_game(x_hero, y_hero, json_dict):
+def save_game(x_hero, y_hero, hero_hp, json_dict):
     save_dict = dict()
     save_dict["x_hero"] = x_hero
     save_dict["y_hero"] = y_hero
+    save_dict["hp_hero"] = hero_hp
     json_dict["Save"] = save_dict
     with open('options.json', 'w') as outfile:
         json.dump(json_dict, outfile)
 
 
-def DrawLvl(x_hero_input=100, y_hero_input=500):
+def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     json_file_object = open("options.json", "r")
@@ -123,7 +124,7 @@ def DrawLvl(x_hero_input=100, y_hero_input=500):
     # будем использовать как фон
     background.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
 
-    hero = Player(x_hero_input, y_hero_input)  # создаем героя по (x,y) координатам
+    hero = Player(x_hero_input, y_hero_input, now_hero_hp)  # создаем героя по (x,y) координатам
     doctor_mob1 = Doctor(350, 500)
     doctor_mob2 = Doctor(550, 500)
     low_level_mob = LowLevelMob(750, 500)
@@ -135,7 +136,7 @@ def DrawLvl(x_hero_input=100, y_hero_input=500):
 
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
-    global_pause = use_pause = False
+    global_pause = use_pause = green_label = False
 
     entities = pygame.sprite.Group()  # Все объекты
     platforms = []  # то, во что мы будем врезаться или опираться
@@ -214,8 +215,12 @@ def DrawLvl(x_hero_input=100, y_hero_input=500):
                 if global_pause:
                     if event.key == K_DOWN:
                         pause_menu += 1
+                        if green_label:
+                            green_label = False
                     if event.key == K_UP:
                         pause_menu -= 1
+                        if green_label:
+                            green_label = False
                     if event.key == K_RETURN:
                         if pause_menu == 1:
                             global_pause = False
@@ -257,8 +262,11 @@ def DrawLvl(x_hero_input=100, y_hero_input=500):
                 options_label = label_font.render('Options', False, (255, 255, 255))
                 exit_label = label_font.render('Back to menu', False, (255, 255, 255))
             if pause_menu == 2:
+                if green_label:
+                    save_label = label_font.render('Save the game', False, (80, 255, 80))
+                else:
+                    save_label = label_font.render('Save the game', False, (170, 170, 170))
                 continue_label = label_font.render('Continue', False, (255, 255, 255))
-                save_label = label_font.render('Save the game', False, (170, 170, 170))
                 options_label = label_font.render('Options', False, (255, 255, 255))
                 exit_label = label_font.render('Back to menu', False, (255, 255, 255))
             if pause_menu == 3:
@@ -317,7 +325,8 @@ def DrawLvl(x_hero_input=100, y_hero_input=500):
                 pygame.mixer.music.stop()
 
         if save_flag:
-            save_game(x_origin, y_hero, json_dict)
+            save_game(x_origin, y_hero, now_hero_hp, json_dict)
+            green_label = True
             save_flag = False
 
         pygame.display.update()  # обновление и вывод всех изменений на экран

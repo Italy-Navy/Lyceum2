@@ -48,6 +48,10 @@ def menu_music():
     pygame.mixer.music.play(-1)
 
 
+def prepare_save_file(js_dict):
+    return js_dict["Save"]["x_hero"], js_dict["Save"]["y_hero"], js_dict["Save"]["hp_hero"]
+
+
 if __name__ == "__main__":
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
@@ -92,7 +96,7 @@ if __name__ == "__main__":
                 if event.key == K_RETURN:
                     if now_menu == 1:
                         if json_dict["last_lvl"] == 1:
-                            lvl1.DrawLvl(json_dict["Save"]["x_hero"], json_dict["Save"]["y_hero"])
+                            lvl1.DrawLvl(*prepare_save_file(json_dict))
                     if now_menu == 2:
                         lvl_menu.lvl_menu()
                         menu_music()
