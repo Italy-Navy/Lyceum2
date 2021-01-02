@@ -35,6 +35,19 @@ def lvl_menu():
     json_dict = json.load(json_file_object)
     FPS = json_dict["FPS"]
     Music_Value = json_dict["music_value"]
+    if json_dict["Location_1"] == "open":
+        L1 = True
+    else:
+        L1 = False
+    if json_dict["Location_2"] == "open":
+        L2 = True
+    else:
+        L2 = False
+    if json_dict["Location_3"] == "open":
+        L3 = True
+    else:
+        L3 = False
+
     json_file_object.close()
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
@@ -50,6 +63,7 @@ def lvl_menu():
     arrow_font = pygame.font.SysFont('Comic Sans MS', 150)
     head_font = pygame.font.SysFont('Comic Sans MS', 80)
     label_font = pygame.font.SysFont('Comic Sans MS', 50)
+    min_font = pygame.font.SysFont('Comic Sans MS', 35)
 
     Right_arrow = arrow_font.render('>', False, (255, 255, 255))
     Left_arrow = arrow_font.render('<', False, (255, 255, 255))
@@ -57,6 +71,8 @@ def lvl_menu():
     Voodoo_forest_label = label_font.render('Voodoo Forest', False, (170, 255, 75))
     Witch_City_label = label_font.render('City of witches', False, (153, 24, 24))
     Castle_label = label_font.render('Dark Castle', False, (155, 155, 50))
+
+    flag_draw_lock = False
 
     clock = pygame.time.Clock()
     running = True
@@ -66,16 +82,32 @@ def lvl_menu():
         for event in pygame.event.get():  # Обрабатываем события
             if event.type == QUIT:
                 running = False
+                sys.exit()
             elif event.type == KEYDOWN:
                 if event.key == K_RIGHT:
                     now_menu += 1
+                    flag_draw_lock = False
                 if event.key == K_LEFT:
                     now_menu -= 1
+                    flag_draw_lock = False
                 if event.key == K_ESCAPE:
                     running = False
                 if event.key == K_RETURN:
                     if now_menu == 1:
-                        lvl1.DrawLvl()
+                        if L1:
+                            lvl1.DrawLvl()
+                        else:
+                            flag_draw_lock = True
+                    if now_menu == 2:
+                        if L2:
+                            pass
+                        else:
+                            flag_draw_lock = True
+                    if now_menu == 3:
+                        if L3:
+                            pass
+                        else:
+                            flag_draw_lock = True
 
         if now_menu > 3:
             now_menu = 3
@@ -86,17 +118,31 @@ def lvl_menu():
             screen.blit(pygame.transform.scale(load_bg("background_images/bg_tree_2.png"), (1280, 720)), (0, 0))
             screen.blit(Right_arrow, (1200, 250))
             screen.blit(Voodoo_forest_label, (475, 600))
+            if not L1:
+                screen.blit(pygame.transform.scale(load_bg("lock.png"), (400, 300)), (440, 200))
 
         elif now_menu == 2:
             screen.blit(pygame.transform.scale(load_bg("background_images/bg_night_town.png"), (1280, 720)), (0, 0))
             screen.blit(Right_arrow, (1200, 250))
             screen.blit(Left_arrow, (50, 250))
             screen.blit(Witch_City_label, (475, 625))
+            if not L2:
+                screen.blit(pygame.transform.scale(load_bg("lock.png"), (400, 300)), (440, 200))
 
         elif now_menu == 3:
             screen.blit(pygame.transform.scale(load_bg("background_images/bg_castle.png"), (1280, 720)), (0, 0))
             screen.blit(Left_arrow, (50, 250))
             screen.blit(Castle_label, (500, 625))
+            if not L3:
+                screen.blit(pygame.transform.scale(load_bg("lock.png"), (400, 300)), (440, 200))
+
+        if flag_draw_lock:
+            transparent_lock = pygame.Surface((260, 53))
+            transparent_lock.set_alpha(80)
+            transparent_lock.fill((255, 80, 70))
+            Save_label_name = min_font.render("Open Location", False, (255, 255, 255))
+            screen.blit(Save_label_name, (520, 540))
+            screen.blit(transparent_lock, (510, 540))
 
         screen.blit(Select_label, (360, 0))
 
