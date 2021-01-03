@@ -67,7 +67,7 @@ class Worm(sprite.Sprite):
         self.POSITION_RIGHT = True
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
-        self.image = Surface((WIDTH + 10, HEIGHT + 15))
+        self.image = Surface((WIDTH + 15, HEIGHT + 15))
         self.image.fill(Color(COLOR))
         self.rect = Rect(x, y, WIDTH, HEIGHT + 15)  # прямоугольный объект
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным

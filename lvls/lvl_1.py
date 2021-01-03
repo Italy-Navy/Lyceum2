@@ -11,6 +11,7 @@ from mobs.Fireball import *
 from hero.hero_hp import *
 from fps_measurement import *
 import option_menu as options
+from mobs.Sprout import *
 
 # Объявляем переменные
 WIN_WIDTH = 1280  # Ширина создаваемого окна
@@ -130,9 +131,10 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
     low_level_mob = LowLevelMob(750, 500)
     plant_mob = Plant(250, 400)
     npc_worm = Worm(100, 400)
-    wizard_mob = Wizard(110, 400)
+    wizard_mob = Wizard(810, 400)
     hero_hp = health_bar(50, 30)
     fps_label = fps_measure(1200, 30)
+    sprout_mob = Sprout(80, 500)
 
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
@@ -164,6 +166,7 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
     entities.add(wizard_mob)
     entities.add(hero_hp)
     entities.add(fps_label)
+    entities.add(sprout_mob)
 
     total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
@@ -305,6 +308,7 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
             low_level_mob.low_level_mob_behavior(x_hero, y_hero, platforms)
             plant_mob.plant_behavior(x_hero, y_hero, platforms)
             npc_worm.worm_behavior(x_hero, y_hero, platforms)
+            sprout_mob.sprout_behavior(x_hero, y_hero, platforms)
 
             fps_label.update_fps(int(clock.get_fps()), camera.state.x)
             use_fireball = wizard_mob.wizard_behavior(x_hero, y_hero, platforms)
