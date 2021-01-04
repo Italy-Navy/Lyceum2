@@ -6,8 +6,8 @@ import sys
 import pygame
 from pygame import *
 
-PLATFORM_WIDTH = 10
-PLATFORM_HEIGHT = 10
+PLATFORM_WIDTH = 20
+PLATFORM_HEIGHT = 20
 PLATFORM_COLOR = "#FF6262"
 
 

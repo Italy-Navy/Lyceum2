@@ -1,121 +1,258 @@
+import pygame
 from pygame import *
 from hero import playanim as pyganim
 import os
+from random import randint as rnd
 
 COLOR = "#888888"
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 
 RUN_RIGHT = [
-    ('%s/../data/animations/Main_Hero/run_r/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/5.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/6.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/7.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/8.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/9.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/10.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/11.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_r/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_right/8.png' % ICON_DIR),
 ]
 
-
 RUN_LEFT = [
-    ('%s/../data/animations/Main_Hero/run_l/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/5.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/6.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/7.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/8.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/9.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/10.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/11.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/run_l/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/run_left/8.png' % ICON_DIR),
 ]
 
 IDLE_RIGHT = [
-    ('%s/../data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_r/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_r/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_r/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/13.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/14.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_right/15.png' % ICON_DIR),
 ]
 
 IDLE_LEFT = [
-    ('%s/../data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_l/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_l/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_l/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/13.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/14.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/idle_left/15.png' % ICON_DIR),
 ]
 
 JUMP_RIGHT = [
-    ('%s/../data/animations/Main_Hero/idle_r/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_r/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_r/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_r/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_right/7.png' % ICON_DIR),
 ]
 
 JUMP_LEFT = [
-    ('%s/../data/animations/Main_Hero/idle_l/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_l/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_l/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/jump_l/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/jump_left/7.png' % ICON_DIR),
 ]
 
-ATTACK_RIGHT = [
-    ('%s/../data/animations/Main_Hero/attack_r/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_r/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_r/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_r/5.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_r/6.png' % ICON_DIR),
+ATTACK_HEW_RIGHT = [
+    ('%s/../data/animations/Main_Hero/attack_hew_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_right/10.png' % ICON_DIR),
 ]
 
-ATTACK_LEFT = [
-    ('%s/../data/animations/Main_Hero/attack_l/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_l/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_l/4.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_l/5.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/attack_l/6.png' % ICON_DIR),
+ATTACK_HEW_LEFT = [
+    ('%s/../data/animations/Main_Hero/attack_hew_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_hew_left/10.png' % ICON_DIR),
 ]
 
-CROUCH_RIGHT = [
-    ('%s/../data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_r/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_r/1.png' % ICON_DIR),
+ATTACK_PRICK_RIGHT = [
+    ('%s/../data/animations/Main_Hero/attack_prick_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_right/8.png' % ICON_DIR),
 ]
 
-CROUCH_LEFT = [
-    ('%s/../data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_l/3.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/crouch_l/1.png' % ICON_DIR),
+ATTACK_PRICK_LEFT = [
+    ('%s/../data/animations/Main_Hero/attack_prick_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_prick_left/8.png' % ICON_DIR),
 ]
 
-DIE_RIGHT = [
-    ('%s/../data/animations/Main_Hero/die_r/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/die_r/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/die_r/3.png' % ICON_DIR),
+ATTACK_SLASH_RIGHT = [
+    ('%s/../data/animations/Main_Hero/attack_slash_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_right/12.png' % ICON_DIR),
 ]
 
-DIE_LEFT = [
-    ('%s/../data/animations/Main_Hero/die_l/1.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/die_l/2.png' % ICON_DIR),
-    ('%s/../data/animations/Main_Hero/die_l/3.png' % ICON_DIR),
+ATTACK_SLASH_LEFT = [
+    ('%s/../data/animations/Main_Hero/attack_slash_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/attack_slash_left/12.png' % ICON_DIR),
+]
+
+DEATH_RIGHT = [
+    ('%s/../data/animations/Main_Hero/death_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/13.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/14.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_right/15.png' % ICON_DIR),
+]
+
+DEATH_LEFT = [
+    ('%s/../data/animations/Main_Hero/death_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/13.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/14.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/death_left/15.png' % ICON_DIR),
+]
+
+ROLL_RIGHT = [
+    ('%s/../data/animations/Main_Hero/roll_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/13.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/14.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_right/15.png' % ICON_DIR),
+]
+
+ROLL_LEFT = [
+    ('%s/../data/animations/Main_Hero/roll_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/7.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/8.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/9.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/10.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/11.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/12.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/13.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/14.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/roll_left/15.png' % ICON_DIR),
+]
+
+SHIELD_RIGHT = [
+    ('%s/../data/animations/Main_Hero/shield_right/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_right/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_right/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_right/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_right/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_right/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_right/7.png' % ICON_DIR),
+]
+
+SHIELD_LEFT = [
+    ('%s/../data/animations/Main_Hero/shield_left/1.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_left/2.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_left/3.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_left/4.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_left/5.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_left/6.png' % ICON_DIR),
+    ('%s/../data/animations/Main_Hero/shield_left/7.png' % ICON_DIR),
 ]
 
 
@@ -135,7 +272,7 @@ class Player(sprite.Sprite):
         self.HEIGHT = 48
 
         self.ANIMATION_DELAY = 0.1  # скорость смены кадров
-        self.ANIMATION_DELAY_ATTACK = 0.15  # скорость смены кадров
+        self.ANIMATION_DELAY_ATTACK = 0.09  # скорость смены кадров
         self.ANIMATION_DELAY_JUMP = 0.15  # скорость смены кадров прыжков
         self.ANIMATION_DELAY_CROUCH = 0.1
         self.ANIMATION_DELAY_DIE = 0.35
@@ -206,98 +343,90 @@ class Player(sprite.Sprite):
         self.boltJumpLeft.play()
 
         boltAnim = []
-        for anim in ATTACK_RIGHT:
+        for anim in ATTACK_HEW_RIGHT:
             boltAnim.append((anim, self.ANIMATION_DELAY_ATTACK))
-        self.boltAttackRight = pyganim.PygAnimation(boltAnim, loop=False)
+        self.boltAttackHewRight = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
-        for anim in ATTACK_LEFT:
+        for anim in ATTACK_HEW_LEFT:
             boltAnim.append((anim, self.ANIMATION_DELAY_ATTACK))
-        self.boltAttackLeft = pyganim.PygAnimation(boltAnim, loop=False)
+        self.boltAttackHewLeft = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
-        for anim in CROUCH_RIGHT:
-            boltAnim.append((anim, self.ANIMATION_DELAY_CROUCH))
-        self.boltCrouchRight = pyganim.PygAnimation(boltAnim, loop=False)
-        self.boltCrouchRight.play()
+        for anim in ATTACK_PRICK_RIGHT:
+            boltAnim.append((anim, self.ANIMATION_DELAY_ATTACK))
+        self.boltAttackPrickRight = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
-        for anim in CROUCH_LEFT:
-            boltAnim.append((anim, self.ANIMATION_DELAY_CROUCH))
-        self.boltCrouchLeft = pyganim.PygAnimation(boltAnim, loop=False)
-        self.boltCrouchLeft.play()
+        for anim in ATTACK_PRICK_LEFT:
+            boltAnim.append((anim, self.ANIMATION_DELAY_ATTACK))
+        self.boltAttackPrickLeft = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
-        for anim in CROUCH_LEFT:
-            boltAnim.append((anim, self.ANIMATION_DELAY_CROUCH))
-        self.boltCrouchLeft = pyganim.PygAnimation(boltAnim, loop=False)
-        self.boltCrouchLeft.play()
+        for anim in ATTACK_SLASH_RIGHT:
+            boltAnim.append((anim, self.ANIMATION_DELAY_ATTACK))
+        self.boltAttaclSlashRight = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
-        for anim in DIE_RIGHT:
+        for anim in ATTACK_SLASH_LEFT:
+            boltAnim.append((anim, self.ANIMATION_DELAY_ATTACK))
+        self.boltAttackSlashLeft = pyganim.PygAnimation(boltAnim, loop=False)
+
+        boltAnim = []
+        for anim in DEATH_RIGHT:
             boltAnim.append((anim, self.ANIMATION_DELAY_DIE))
         self.boltDieRight = pyganim.PygAnimation(boltAnim, loop=False)
 
         boltAnim = []
-        for anim in DIE_LEFT:
+        for anim in DEATH_LEFT:
             boltAnim.append((anim, self.ANIMATION_DELAY_DIE))
         self.boltDieLeft = pyganim.PygAnimation(boltAnim, loop=False)
 
     def update(self, x, y, left, right, up, key_attack, ability, platforms):
-        self.hero_attack = key_attack
-        if self.flag_attack_left and not key_attack:
-            self.rect = Rect(int(x + 30), int(y), int(self.WIDTH), int(self.HEIGHT))  # прямоугольный объект
-            self.flag_attack_left = False
-            self.return_update = 0
-
         if not (left or right):  # стоим, когда нет указаний идти
             self.xvel = 0
             if not up:
                 self.image.fill(Color(COLOR))
                 if self.POSITION_RIGHT:
-                    self.boltIdleRight.blit(self.image, (0, 0))
+                    self.boltIdleRight.blit(self.image, (0, -10))
                 else:
-                    self.boltIdleLeft.blit(self.image, (0, 0))
+                    self.boltIdleLeft.blit(self.image, (15, -10))
 
         if up:
             if self.onGround:  # прыгаем, только когда можем оттолкнуться от земли
                 self.yvel = -self.JUMP_POWER
             self.image.fill(Color(COLOR))
             if self.POSITION_RIGHT:
-                self.boltJumpRight.blit(self.image, (0, 0))
+                self.boltJumpRight.blit(self.image, (-33, 0))
             else:
-                self.boltJumpLeft.blit(self.image, (0, 0))
+                self.boltJumpLeft.blit(self.image, (-35, 0))
 
         if left:
-            self.xvel = -self.MOVE_SPEED  # Лево = x- n
+            self.xvel = -self.MOVE_SPEED # Лево = x- n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = False
             if up:
-                self.boltJumpLeft.blit(self.image, (0, 0))
+                self.boltJumpLeft.blit(self.image, (-35, 0))
             else:
-                self.boltRunLeft.blit(self.image, (0, 0))
+                self.boltRunLeft.blit(self.image, (-10, -10))
 
         if right:
             self.xvel = self.MOVE_SPEED  # Право = x + n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = True
             if up:
-                self.boltJumpRight.blit(self.image, (0, 0))
+                self.boltJumpRight.blit(self.image, (-33, 0))
             else:
-                self.boltRunRight.blit(self.image, (0, 0))
+                self.boltRunRight.blit(self.image, (-38, -10))
 
         if key_attack:
             self.image.fill(Color(COLOR))
             if self.POSITION_RIGHT:
-                self.boltAttackRight.blit(self.image, (0, 0))
-                self.boltAttackRight.play()
+                self.boltAttackPrickRight.blit(self.image, (-33, -10))
+                self.boltAttackPrickRight.play()
             else:
-                if not self.flag_attack_left:
-                    self.xvel -= 30
-                    self.flag_attack_left = True
-                    self.return_update = 30
-                self.boltAttackLeft.blit(self.image, (0, 0))
-                self.boltAttackLeft.play()
+                self.boltAttackPrickLeft.blit(self.image, (-37, -10))
+                self.boltAttackPrickLeft.play()
 
         if ability and self.flag_ability:
             if self.POSITION_RIGHT:
@@ -312,10 +441,10 @@ class Player(sprite.Sprite):
         if self.now_health_points <= 0:
             self._all_stop()
             if self.POSITION_RIGHT:
-                self.boltDieRight.blit(self.image, (0, 0))
+                self.boltDieRight.blit(self.image, (0, -10))
                 self.boltDieRight.play()
             else:
-                self.boltDieLeft.blit(self.image, (0, 0))
+                self.boltDieLeft.blit(self.image, (0, -10))
                 self.boltDieLeft.play()
 
         if not self.onGround:
@@ -325,17 +454,15 @@ class Player(sprite.Sprite):
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
         self.rect.x += self.xvel  # переносим свои положение на xvel
-        self.collide(self.xvel, 0, platforms)
-        return self.return_update
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
             if sprite.collide_rect(self, p):  # если есть пересечение платформы с игроком
                 if xvel > 0:  # если движется вправо
-                    self.rect.right = p.rect.left  # то не движется вправо
+                    self.rect.right = p.rect.left # то не движется вправо
 
                 if xvel < 0:  # если движется влево
-                    self.rect.left = p.rect.right  # то не движется влево
+                    self.rect.left = p.rect.right # то не движется влево
 
                 if yvel > 0:  # если падает вниз
                     self.rect.bottom = p.rect.top  # то не падает вниз
@@ -348,13 +475,9 @@ class Player(sprite.Sprite):
 
     def _all_stop(self):
         self.boltJumpLeft.stop()
-        self.boltCrouchLeft.stop()
         self.boltRunLeft.stop()
         self.boltIdleLeft.stop()
-        self.boltAttackLeft.stop()
 
-        self.boltAttackRight.stop()
-        self.boltCrouchRight.stop()
         self.boltIdleRight.stop()
         self.boltJumpRight.stop()
         self.boltRunRight.stop()
@@ -363,8 +486,7 @@ class Player(sprite.Sprite):
         s = str(self.rect)
         s_arr = s[6:-2].split(',')
         x_sr = (int(s_arr[0]) + int(s_arr[0])) / 2
-        if self.flag_attack_left and self.hero_attack:
-            x_sr += 30
+        x_sr += 25
         return int(x_sr), int(s_arr[0]), int(s_arr[1])
 
     def give_damage(self, value):
@@ -372,12 +494,12 @@ class Player(sprite.Sprite):
             self.image.fill(Color(COLOR))
             self.now_health_points -= value
             if self.POSITION_RIGHT:
-                self.boltCrouchRight.blit(self.image, (0, 10))
-                self.boltCrouchRight.play()
+                #self.boltCrouchRight.blit(self.image, (0, 10))
+                #self.boltCrouchRight.play()
                 self.on_attack = True
             else:
-                self.boltCrouchLeft.blit(self.image, (0, 10))
-                self.boltCrouchLeft.play()
+                #self.boltCrouchLeft.blit(self.image, (0, 10))
+                #self.boltCrouchLeft.play()
                 self.on_attack = True
 
     def get_hp(self):

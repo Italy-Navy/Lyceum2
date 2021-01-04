@@ -61,8 +61,8 @@ class Camera(object):
     def apply(self, target):
         return target.rect.move(self.state.topleft)
 
-    def update(self, target, delta):
-        self.state = self.camera_func(self.state, attack_camera_left(target.rect, delta))
+    def update(self, target):
+        self.state = self.camera_func(self.state, Rect(target.rect.x, target.rect.y, target.rect.w, target.rect.h))
 
 
 def camera_configure(camera, target_rect):
@@ -75,12 +75,6 @@ def camera_configure(camera, target_rect):
     t = max(-(camera.height - WIN_HEIGHT), t)  # Не движемся дальше нижней границы
     t = min(0, t)  # Не движемся дальше верхней границы
     return Rect(l, t, w, h)
-
-
-def attack_camera_left(rectangle, delta):
-    s = str(rectangle)
-    e = s[6:-2].split(',')
-    return Rect(int(e[0]) + delta, int(e[1]), int(e[2]) + delta, int(e[3]))
 
 
 def battle_music():
@@ -106,7 +100,7 @@ def save_game(x_hero, y_hero, hero_hp, json_dict):
         json.dump(json_dict, outfile)
 
 
-def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
+def DrawLvl(x_hero_input=2000, y_hero_input=500, now_hero_hp=250):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     json_file_object = open("options.json", "r")
@@ -157,7 +151,6 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
-    entities.add(hero)
     entities.add(doctor_mob1)
     entities.add(doctor_mob2)
     entities.add(low_level_mob)
@@ -183,6 +176,10 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
     transparent_pause_all.set_alpha(255)
     transparent_pause_all.fill((50, 50, 50))
 
+    transparent_surface = pygame.Surface((1280, 720))
+    transparent_surface.set_alpha(50)
+    transparent_surface.fill((50, 50, 50))
+
     pause_menu = 1
 
     main_font = pygame.font.SysFont('Comic Sans MS', 130)
@@ -191,7 +188,6 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
     pause_label = main_font.render('Pause', False, (255, 255, 255))
 
     running = True
-    use_fireball = True
     while running:  # Основной цикл программы
         clock.tick(FPS)
         for event in pygame.event.get():  # Обрабатываем события
@@ -289,9 +285,10 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
 
         else:
             screen.blit(bg_castle, (0, 0))
+            screen.blit(transparent_surface, (0, 0))
             x_hero, x_origin, y_hero = hero.get_x_y()
-            camera_delta = hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
-            camera.update(hero, camera_delta)  # центризируем камеру относительно персонажа
+            hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
+            camera.update(hero)  # центризируем камеру относительно персонажа
 
             doctor_mob1.doctor_behavior(x_hero, y_hero, platforms)
             doctor_mob2.doctor_behavior(x_hero, y_hero, platforms)
@@ -311,22 +308,18 @@ def DrawLvl(x_hero_input=100, y_hero_input=500, now_hero_hp=250):
             sprout_mob.sprout_behavior(x_hero, y_hero, platforms)
 
             fps_label.update_fps(int(clock.get_fps()), camera.state.x)
-            use_fireball = wizard_mob.wizard_behavior(x_hero, y_hero, platforms)
-
-            if use_fireball:
-                spawn_x, spawn_y, position_right = wizard_mob.information_for_fireball()
-                fireball = Fireball(spawn_x, spawn_y)
-                entities.add(fireball)
-                fireball.fireball_behavior(spawn_x, spawn_y, platforms, position_right)
-                entities.add(fireball)
 
             for element in entities:
                 screen.blit(element.image, camera.apply(element))
             screen.blit(hero_hp.image, camera.apply(hero_hp))
 
-            if hero.flag_to_stop():
-                running = False
-                pygame.mixer.music.stop()
+            screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
+            # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))
+            # screen.blit(hero.image, camera.apply(hero))
+
+        if hero.flag_to_stop():
+            running = False
+            pygame.mixer.music.stop()
 
         if save_flag:
             save_game(x_origin, y_hero, now_hero_hp, json_dict)

@@ -178,7 +178,6 @@ class Sprout(sprite.Sprite):
 
         self.rect.x += self.xvel  # переносим свои положение на xvel
         self.collide(self.xvel, 0, platforms)
-        print(int(hero_x) - int(self.rect.x))
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
