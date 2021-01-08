@@ -59,7 +59,7 @@ class Camera(object):
         self.state = Rect(0, 0, width, height)
 
     def apply(self, target):
-        return target.rect.move(self.state.topleft)
+        return target.rect.move([self.state.topleft[0], self.state.topleft[1]])
 
     def update(self, target):
         self.state = self.camera_func(self.state, Rect(target.rect.x, target.rect.y, target.rect.w, target.rect.h))
@@ -143,7 +143,7 @@ def DrawLvl(x_hero_input=2000, y_hero_input=500, now_hero_hp=250):
         for char in row:  # каждый символ
             if char == "#":
                 # создаем блок, заливаем его цветом и рисеум его
-                platform = Platform(x, y)
+                platform = Platform(x - 15, y)
                 entities.add(platform)
                 platforms.append(platform)
 

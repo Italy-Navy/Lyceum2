@@ -299,10 +299,13 @@ class Player(sprite.Sprite):
         self.startY = y
         self.yvel = 0  # скорость вертикального перемещения
 
+        self.image1 = Surface((self.WIDTH + 50, self.HEIGHT))
+        self.image1.fill(Color(COLOR))
         self.image = Surface((self.WIDTH + 50, self.HEIGHT))
         self.image.fill(Color(COLOR))
         self.return_update = 0
         self.rect = Rect(x, y, self.WIDTH, self.HEIGHT)  # прямоугольный объект
+        self.image1.set_colorkey(Color(COLOR))  # делаем фон прозрачным
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
 
         #        Анимация движения вправо
@@ -386,46 +389,46 @@ class Player(sprite.Sprite):
         if not (left or right):  # стоим, когда нет указаний идти
             self.xvel = 0
             if not up:
-                self.image.fill(Color(COLOR))
+                self.image1.fill(Color(COLOR))
                 if self.POSITION_RIGHT:
-                    self.boltIdleRight.blit(self.image, (0, -10))
+                    self.boltIdleRight.blit(self.image1, (0, -10))
                 else:
-                    self.boltIdleLeft.blit(self.image, (15, -10))
+                    self.boltIdleLeft.blit(self.image1, (15, -10))
 
         if up:
             if self.onGround:  # прыгаем, только когда можем оттолкнуться от земли
                 self.yvel = -self.JUMP_POWER
-            self.image.fill(Color(COLOR))
+            self.image1.fill(Color(COLOR))
             if self.POSITION_RIGHT:
-                self.boltJumpRight.blit(self.image, (-33, 0))
+                self.boltJumpRight.blit(self.image1, (-18, 0))
             else:
-                self.boltJumpLeft.blit(self.image, (-35, 0))
+                self.boltJumpLeft.blit(self.image1, (-35, 0))
 
         if left:
             self.xvel = -self.MOVE_SPEED # Лево = x- n
-            self.image.fill(Color(COLOR))
+            self.image1.fill(Color(COLOR))
             self.POSITION_RIGHT = False
             if up:
-                self.boltJumpLeft.blit(self.image, (-35, 0))
+                self.boltJumpLeft.blit(self.image1, (-35, 0))
             else:
-                self.boltRunLeft.blit(self.image, (-10, -10))
+                self.boltRunLeft.blit(self.image1, (10, -10))
 
         if right:
             self.xvel = self.MOVE_SPEED  # Право = x + n
-            self.image.fill(Color(COLOR))
+            self.image1.fill(Color(COLOR))
             self.POSITION_RIGHT = True
             if up:
-                self.boltJumpRight.blit(self.image, (-33, 0))
+                self.boltJumpRight.blit(self.image1, (-18, 0))
             else:
-                self.boltRunRight.blit(self.image, (-38, -10))
+                self.boltRunRight.blit(self.image1, (-18, -10))
 
         if key_attack:
-            self.image.fill(Color(COLOR))
+            self.image1.fill(Color(COLOR))
             if self.POSITION_RIGHT:
-                self.boltAttackPrickRight.blit(self.image, (-33, -10))
+                self.boltAttackPrickRight.blit(self.image1, (-33, -10))
                 self.boltAttackPrickRight.play()
             else:
-                self.boltAttackPrickLeft.blit(self.image, (-37, -10))
+                self.boltAttackPrickLeft.blit(self.image1, (-30, -10))
                 self.boltAttackPrickLeft.play()
 
         if ability and self.flag_ability:
@@ -441,10 +444,10 @@ class Player(sprite.Sprite):
         if self.now_health_points <= 0:
             self._all_stop()
             if self.POSITION_RIGHT:
-                self.boltDieRight.blit(self.image, (0, -10))
+                self.boltDieRight.blit(self.image1, (0, -10))
                 self.boltDieRight.play()
             else:
-                self.boltDieLeft.blit(self.image, (0, -10))
+                self.boltDieLeft.blit(self.image1, (0, -10))
                 self.boltDieLeft.play()
 
         if not self.onGround:
@@ -454,6 +457,8 @@ class Player(sprite.Sprite):
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
         self.rect.x += self.xvel  # переносим свои положение на xvel
+        self.image.fill(Color(COLOR))
+        self.image.blit(self.image1, (-20, 0))
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
@@ -491,7 +496,7 @@ class Player(sprite.Sprite):
 
     def give_damage(self, value):
         if value != 0:
-            self.image.fill(Color(COLOR))
+            self.image1.fill(Color(COLOR))
             self.now_health_points -= value
             if self.POSITION_RIGHT:
                 #self.boltCrouchRight.blit(self.image, (0, 10))
