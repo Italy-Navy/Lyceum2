@@ -1,3 +1,6 @@
+import sys
+
+import pygame
 from pygame import *
 from hero import playanim as pyganim
 import os
@@ -82,11 +85,29 @@ ATTACK_RIGHT = [
 ]
 
 
+def load_image(name, colorkey=None):
+    fullname = os.path.join(("%s/../../data/assets/mob_bar/" % __file__), name)
+    # если файл не существует, то выходим
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    LI_image = pygame.image.load(fullname)
+    if colorkey is not None:
+        LI_image = LI_image.convert()
+        if colorkey == -1:
+            colorkey = LI_image.get_at((0, 0))
+        LI_image.set_colorkey(colorkey)
+    else:
+        LI_image = LI_image.convert_alpha()
+    return LI_image
+
+
 class Doctor(sprite.Sprite):
     def __init__(self, x, y):
         # ____________________-DEMONS FEATURES-___________________________
 
         self.health_points = 200
+        self.max_hp = self.health_points
         self.damage = 70
 
         # ____________________-DEMONS FEATURES-___________________________
@@ -101,10 +122,14 @@ class Doctor(sprite.Sprite):
         self.onGround = False  # На земле ли я?
         self.total_damage = 0
 
-        self.image = Surface((WIDTH + 10, HEIGHT + 20))
+        self.image = Surface((WIDTH + 10, HEIGHT + 40))
         self.image.fill(Color(COLOR))
-        self.rect = Rect(x, y, WIDTH, HEIGHT + 15)  # прямоугольный объект
+        self.rect = Rect(x, y, WIDTH, HEIGHT + 30)  # прямоугольный объект
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
+
+        self.image_hp = Surface((40, 10))
+        self.image_hp.fill(Color(COLOR))
+        self.image_hp.set_colorkey(Color(COLOR))  # делаем фон прозрачным
 
         # Анимация движения вправо
         boltAnim = []
@@ -214,6 +239,23 @@ class Doctor(sprite.Sprite):
         if not self.onGround:
             self.yvel += GRAVITY
 
+        if self.max_hp != self.health_points:
+            self.image_hp.fill(Color(COLOR))
+            #self.image_hp.blit(pygame.transform.scale(load_image("bar.png"), (30, 11)), (0, 0))
+            base_x = 0
+            num_hp = int(self.health_points / self.max_hp * 100 / 6.25)
+            print(num_hp)
+            for i in range(num_hp):
+                self.image_hp.blit(pygame.transform.scale(load_image("bar_part_2.png"), (2, 7)), (base_x, 0))
+                base_x += 2
+            if self.POSITION_RIGHT:
+                self.image.blit(self.image_hp, (5, 70))
+            else:
+                self.image.blit(self.image_hp, (30, 70))
+
+        if self.health_points <= 0:
+            self.rect.y = 3000
+
         self.onGround = False  # Мы не знаем, когда мы на земле((
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
@@ -244,3 +286,14 @@ class Doctor(sprite.Sprite):
         self.total_damage = 0
         self.attack_flag = False
         return value
+
+    def dam_hero(self, value, x_hero, delta):
+        if value is not None:
+            if delta > 0:
+                if x_hero <= self.rect.x <= x_hero + delta:
+                    self.health_points -= value
+                    print(value)
+            if delta < 0:
+                if x_hero + delta <= self.rect.x <= x_hero:
+                    self.health_points -= value
+                    print(value)

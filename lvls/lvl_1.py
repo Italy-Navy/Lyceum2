@@ -61,6 +61,9 @@ class Camera(object):
     def apply(self, target):
         return target.rect.move([self.state.topleft[0], self.state.topleft[1]])
 
+    def apply_new(self, target):
+        return target.move([self.state.topleft[0], self.state.topleft[1]])
+
     def update(self, target):
         self.state = self.camera_func(self.state, Rect(target.rect.x, target.rect.y, target.rect.w, target.rect.h))
 
@@ -100,7 +103,7 @@ def save_game(x_hero, y_hero, hero_hp, json_dict):
         json.dump(json_dict, outfile)
 
 
-def DrawLvl(x_hero_input=2000, y_hero_input=500, now_hero_hp=250):
+def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     json_file_object = open("options.json", "r")
@@ -143,16 +146,15 @@ def DrawLvl(x_hero_input=2000, y_hero_input=500, now_hero_hp=250):
         for char in row:  # каждый символ
             if char == "#":
                 # создаем блок, заливаем его цветом и рисеум его
-                platform = Platform(x - 15, y)
+                platform = Platform(x, y)
                 entities.add(platform)
                 platforms.append(platform)
-
             x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
-    entities.add(doctor_mob1)
-    entities.add(doctor_mob2)
+    # entities.add(doctor_mob1)
+    # entities.add(doctor_mob2)
     entities.add(low_level_mob)
     entities.add(plant_mob)
     entities.add(npc_worm)
@@ -300,6 +302,14 @@ def DrawLvl(x_hero_input=2000, y_hero_input=500, now_hero_hp=250):
             now_hero_hp, max_hero_hp = hero.get_hp()
             hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
+            # ___________________________________-FROM HERO-_______________________________
+
+            hero_damage, damage_delta = hero.make_damage()
+            doctor_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+            doctor_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+
+            # ___________________________________-FROM HERO-_______________________________
+
             # _____________________________________-DAMAGE CALCULATING-_______________________________
 
             low_level_mob.low_level_mob_behavior(x_hero, y_hero, platforms)
@@ -312,6 +322,12 @@ def DrawLvl(x_hero_input=2000, y_hero_input=500, now_hero_hp=250):
             for element in entities:
                 screen.blit(element.image, camera.apply(element))
             screen.blit(hero_hp.image, camera.apply(hero_hp))
+
+            screen.blit(doctor_mob1.image, camera.apply_new(
+                Rect(doctor_mob1.rect.x, doctor_mob1.rect.y + 15, doctor_mob1.rect.w, doctor_mob1.rect.h)))
+
+            screen.blit(doctor_mob2.image, camera.apply_new(
+                Rect(doctor_mob2.rect.x, doctor_mob2.rect.y + 15, doctor_mob2.rect.w, doctor_mob2.rect.h)))
 
             screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
             # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))

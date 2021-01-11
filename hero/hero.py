@@ -268,7 +268,7 @@ class Player(sprite.Sprite):
 
         # ____________________________-HERO FEATURES-______________________________
 
-        self.WIDTH = 30
+        self.WIDTH = 28
         self.HEIGHT = 48
 
         self.ANIMATION_DELAY = 0.1  # скорость смены кадров
@@ -282,8 +282,10 @@ class Player(sprite.Sprite):
         self.POSITION_RIGHT = True
         self.onGround = False  # На земле ли я?
 
-        self.hero_attack = False
-        self.flag_attack_left = False
+        self.flag_attack = False
+        self.attack_damage = 100
+        self.atack_now = 0.00
+        self.is_damage = True
 
         self.on_attack = False
 
@@ -304,7 +306,7 @@ class Player(sprite.Sprite):
         self.image = Surface((self.WIDTH + 50, self.HEIGHT))
         self.image.fill(Color(COLOR))
         self.return_update = 0
-        self.rect = Rect(x, y, self.WIDTH, self.HEIGHT)  # прямоугольный объект
+        self.rect = Rect(x, y - 10, self.WIDTH, self.HEIGHT)  # прямоугольный объект
         self.image1.set_colorkey(Color(COLOR))  # делаем фон прозрачным
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
 
@@ -405,7 +407,7 @@ class Player(sprite.Sprite):
                 self.boltJumpLeft.blit(self.image1, (-35, 0))
 
         if left:
-            self.xvel = -self.MOVE_SPEED # Лево = x- n
+            self.xvel = -self.MOVE_SPEED  # Лево = x- n
             self.image1.fill(Color(COLOR))
             self.POSITION_RIGHT = False
             if up:
@@ -423,13 +425,7 @@ class Player(sprite.Sprite):
                 self.boltRunRight.blit(self.image1, (-18, -10))
 
         if key_attack:
-            self.image1.fill(Color(COLOR))
-            if self.POSITION_RIGHT:
-                self.boltAttackPrickRight.blit(self.image1, (-33, -10))
-                self.boltAttackPrickRight.play()
-            else:
-                self.boltAttackPrickLeft.blit(self.image1, (-30, -10))
-                self.boltAttackPrickLeft.play()
+            self.flag_attack = True
 
         if ability and self.flag_ability:
             if self.POSITION_RIGHT:
@@ -453,6 +449,21 @@ class Player(sprite.Sprite):
         if not self.onGround:
             self.yvel += self.GRAVITY
 
+        if self.flag_attack:
+            self.image1.fill(Color(COLOR))
+            if self.POSITION_RIGHT:
+                self.boltAttackPrickRight.blit(self.image1, (-33, -10))
+                self.boltAttackPrickRight.play()
+                if self.boltAttackPrickRight.elapsed >= self.boltAttackPrickRight._startTimes[-1] - 0.1:
+                    self.flag_attack = False
+                    self.is_damage = True
+            else:
+                self.boltAttackPrickLeft.blit(self.image1, (-30, -10))
+                self.boltAttackPrickLeft.play()
+                if self.boltAttackPrickLeft.elapsed >= self.boltAttackPrickLeft._startTimes[-1] - 0.1:
+                    self.flag_attack = False
+                    self.is_damage = True
+
         self.onGround = False  # Мы не знаем, когда мы на земле((
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
@@ -464,10 +475,12 @@ class Player(sprite.Sprite):
         for p in platforms:
             if sprite.collide_rect(self, p):  # если есть пересечение платформы с игроком
                 if xvel > 0:  # если движется вправо
-                    self.rect.right = p.rect.left # то не движется вправо
+                    self.rect.right = p.rect.left  # то не движется вправо
+                    self.yvel = 0
 
                 if xvel < 0:  # если движется влево
-                    self.rect.left = p.rect.right # то не движется влево
+                    self.rect.left = p.rect.right  # то не движется влево
+                    self.yvel = 0
 
                 if yvel > 0:  # если падает вниз
                     self.rect.bottom = p.rect.top  # то не падает вниз
@@ -491,7 +504,7 @@ class Player(sprite.Sprite):
         s = str(self.rect)
         s_arr = s[6:-2].split(',')
         x_sr = (int(s_arr[0]) + int(s_arr[0])) / 2
-        x_sr += 25
+        x_sr += 0
         return int(x_sr), int(s_arr[0]), int(s_arr[1])
 
     def give_damage(self, value):
@@ -499,13 +512,22 @@ class Player(sprite.Sprite):
             self.image1.fill(Color(COLOR))
             self.now_health_points -= value
             if self.POSITION_RIGHT:
-                #self.boltCrouchRight.blit(self.image, (0, 10))
-                #self.boltCrouchRight.play()
+                # self.boltCrouchRight.blit(self.image, (0, 10))
+                # self.boltCrouchRight.play()
                 self.on_attack = True
             else:
-                #self.boltCrouchLeft.blit(self.image, (0, 10))
-                #self.boltCrouchLeft.play()
+                # self.boltCrouchLeft.blit(self.image, (0, 10))
+                # self.boltCrouchLeft.play()
                 self.on_attack = True
+
+    def make_damage(self):
+        if self.flag_attack and self.is_damage:
+            self.is_damage = False
+            print(1)
+            if self.POSITION_RIGHT:
+                return rnd(self.attack_damage - 3, self.attack_damage + 3), 50
+            return rnd(self.attack_damage - 3, self.attack_damage + 3), -50
+        return None, None
 
     def get_hp(self):
         return self.now_health_points, self.max_health_points
