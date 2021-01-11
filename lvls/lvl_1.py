@@ -123,15 +123,17 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
     background.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
 
     hero = Player(x_hero_input, y_hero_input, now_hero_hp)  # создаем героя по (x,y) координатам
-    doctor_mob1 = Doctor(350, 500)
-    doctor_mob2 = Doctor(550, 500)
-    low_level_mob = LowLevelMob(750, 500)
-    plant_mob = Plant(250, 400)
-    npc_worm = Worm(100, 400)
+    doctor_mob1 = Doctor(1880, 670)
+    low_level_mob1 = LowLevelMob(900, 670)
+    low_level_mob2 = LowLevelMob(1800, 530)
+    low_level_mob3 = LowLevelMob(1500, 670)
+    plant_mob1 = Plant(1420, 500)
+    plant_mob2 = Plant(1900, 450)
+    npc_worm = Worm(3000, 6700)
     wizard_mob = Wizard(810, 400)
     hero_hp = health_bar(50, 30)
     fps_label = fps_measure(1200, 30)
-    sprout_mob = Sprout(80, 500)
+    sprout_mob = Sprout(2000, 540)
 
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
@@ -144,19 +146,29 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
     level = load_level("lvl1.txt")
     for row in level:  # вся строка
         for char in row:  # каждый символ
-            if char == "#":
-                # создаем блок, заливаем его цветом и рисеум его
-                platform = Platform(x, y)
+            if char == "p":
+                platform = PlatformLvl1(x - 15, y)
                 entities.add(platform)
                 platforms.append(platform)
+            if char == "e":
+                earth = EarthLvl1(x - 15, y)
+                entities.add(earth)
+                platforms.append(earth)
+            if char == "~":
+                extra_earth = ExtraEarthLvl1(x - 15, y)
+                entities.add(extra_earth)
+                platforms.append(extra_earth)
             x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
     # entities.add(doctor_mob1)
     # entities.add(doctor_mob2)
-    entities.add(low_level_mob)
-    entities.add(plant_mob)
+    entities.add(low_level_mob1)
+    entities.add(low_level_mob2)
+    entities.add(low_level_mob3)
+    entities.add(plant_mob1)
+    entities.add(plant_mob2)
     entities.add(npc_worm)
     entities.add(wizard_mob)
     entities.add(hero_hp)
@@ -289,16 +301,15 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
             screen.blit(bg_castle, (0, 0))
             screen.blit(transparent_surface, (0, 0))
             x_hero, x_origin, y_hero = hero.get_x_y()
+            print(x_hero, y_hero)
             hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
             camera.update(hero)  # центризируем камеру относительно персонажа
 
             doctor_mob1.doctor_behavior(x_hero, y_hero, platforms)
-            doctor_mob2.doctor_behavior(x_hero, y_hero, platforms)
 
             # _____________________________________-DAMAGE CALCULATING-_______________________________
 
             hero.give_damage(doctor_mob1.get_tick_damage())
-            hero.give_damage(doctor_mob2.get_tick_damage())
             now_hero_hp, max_hero_hp = hero.get_hp()
             hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
@@ -306,14 +317,16 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
 
             hero_damage, damage_delta = hero.make_damage()
             doctor_mob1.dam_hero(hero_damage, x_hero, damage_delta)
-            doctor_mob2.dam_hero(hero_damage, x_hero, damage_delta)
 
             # ___________________________________-FROM HERO-_______________________________
 
             # _____________________________________-DAMAGE CALCULATING-_______________________________
 
-            low_level_mob.low_level_mob_behavior(x_hero, y_hero, platforms)
-            plant_mob.plant_behavior(x_hero, y_hero, platforms)
+            low_level_mob1.low_level_mob_behavior(x_hero, y_hero, platforms)
+            low_level_mob2.low_level_mob_behavior(x_hero, y_hero, platforms)
+            low_level_mob3.low_level_mob_behavior(x_hero, y_hero, platforms)
+            plant_mob1.plant_behavior(x_hero, y_hero, platforms)
+            plant_mob2.plant_behavior(x_hero, y_hero, platforms)
             npc_worm.worm_behavior(x_hero, y_hero, platforms)
             sprout_mob.sprout_behavior(x_hero, y_hero, platforms)
 
@@ -326,8 +339,6 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
             screen.blit(doctor_mob1.image, camera.apply_new(
                 Rect(doctor_mob1.rect.x, doctor_mob1.rect.y + 15, doctor_mob1.rect.w, doctor_mob1.rect.h)))
 
-            screen.blit(doctor_mob2.image, camera.apply_new(
-                Rect(doctor_mob2.rect.x, doctor_mob2.rect.y + 15, doctor_mob2.rect.w, doctor_mob2.rect.h)))
 
             screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
             # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))

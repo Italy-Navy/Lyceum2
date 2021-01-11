@@ -80,7 +80,7 @@ class Sprout(sprite.Sprite):
         self.xvel = 0  # скорость перемещения. 0 - стоять на месте
         self.startX = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
         self.startY = y
-        self.POSITION_RIGHT = True
+        self.POSITION_RIGHT = False
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
         self.image = Surface((WIDTH + 65, HEIGHT + 30))

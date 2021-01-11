@@ -47,10 +47,56 @@ class Empty(sprite.Sprite):
         self.image = load_image("empty.png", "data/assets", colorkey=True)
         self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
 
-# class Water(sprite.Sprite):
-#    def __init__(self, x, y):
-#        sprite.Sprite.__init__(self)
-##        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
-#       self.image.fill(Color(PLATFORM_COLOR))
-#       self.image = load_image("water.png", "assets", colorkey=True)
-#       self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+
+class FloorLvl1(sprite.Sprite):
+    def __init__(self, x, y):
+        sprite.Sprite.__init__(self)
+        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+        self.image.fill(Color(PLATFORM_COLOR))
+        self.image = load_image("floor.png", "data/assets/tiles_1lvl", colorkey=True)
+        self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+
+
+class EarthLvl1(sprite.Sprite):
+    def __init__(self, x, y):
+        sprite.Sprite.__init__(self)
+        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+        self.image.fill(Color(PLATFORM_COLOR))
+        self.image = load_image("earth.png", "data/assets/tiles_1lvl", colorkey=True)
+        self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+
+
+class DescentLeftLvl1(sprite.Sprite):
+    def __init__(self, x, y):
+        sprite.Sprite.__init__(self)
+        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+        self.image.fill(Color(PLATFORM_COLOR))
+        self.image = load_image("descent_left.png", "data/assets/tiles_1lvl", colorkey=True)
+        self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+
+
+class DescentRightLvl1(sprite.Sprite):
+    def __init__(self, x, y):
+        sprite.Sprite.__init__(self)
+        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+        self.image.fill(Color(PLATFORM_COLOR))
+        self.image = load_image("descent_right.png", "data/assets/tiles_1lvl", colorkey=True)
+        self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+
+
+class PlatformLvl1(sprite.Sprite):
+    def __init__(self, x, y):
+        sprite.Sprite.__init__(self)
+        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+        self.image.fill(Color(PLATFORM_COLOR))
+        self.image = load_image("platform.png", "data/assets/tiles_1lvl", colorkey=True)
+        self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+
+
+class ExtraEarthLvl1(sprite.Sprite):
+    def __init__(self, x, y):
+        sprite.Sprite.__init__(self)
+        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+        self.image.fill(Color(PLATFORM_COLOR))
+        self.image = load_image("extra_earth.png", "data/assets/tiles_1lvl", colorkey=True)
+        self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
