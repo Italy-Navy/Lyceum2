@@ -64,10 +64,10 @@ class Worm(sprite.Sprite):
         self.xvel = 0  # скорость перемещения. 0 - стоять на месте
         self.startX = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
         self.startY = y
-        self.POSITION_RIGHT = True
+        self.POSITION_RIGHT = False
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
-        self.image = Surface((WIDTH + 15, HEIGHT + 15))
+        self.image = Surface((WIDTH + 40, HEIGHT + 15))
         self.image.fill(Color(COLOR))
         self.rect = Rect(x, y, WIDTH, HEIGHT + 15)  # прямоугольный объект
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
@@ -104,16 +104,10 @@ class Worm(sprite.Sprite):
         self.boltAttack.play()
 
     def worm_behavior(self, hero_x, hero_y, platforms):
-        if -1000 <= int(self.rect.x) - int(hero_x) <= 1000:
-            self.xvel = 0
-            self.image.fill(Color(COLOR))
-            self.POSITION_RIGHT = True
-            self.boltIdleRight.blit(self.image, (0, 0))
-        elif -1000 <= int(self.rect.x) - int(hero_x) <= 0:
-            self.xvel = 0
-            self.POSITION_RIGHT = False
-            self.image.fill(Color(COLOR))
-            self.boltIdleLeft.blit(self.image, (0, 0))
+        self.xvel = 0
+        self.POSITION_RIGHT = False
+        self.image.fill(Color(COLOR))
+        self.boltIdleLeft.blit(self.image, (0, 0))
 
         if not self.onGround:
             self.yvel += GRAVITY
@@ -124,6 +118,7 @@ class Worm(sprite.Sprite):
 
         self.rect.x += self.xvel  # переносим свои положение на xvel
         self.collide(self.xvel, 0, platforms)
+        print(self.rect.x, self.rect.y, hero_y, hero_x)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:

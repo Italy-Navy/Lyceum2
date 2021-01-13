@@ -150,12 +150,12 @@ class Sprout(sprite.Sprite):
             self.POSITION_RIGHT = False
             self.image.fill(Color(COLOR))
             self.boltAttackLeft.blit(self.image, (0, 0))
-        elif -50 <= int(hero_y) - 30 - self.rect.y <= 50 and -200 <= int(hero_x) - int(self.rect.x) <= 0:
+        elif -50 <= int(hero_y) - 30 - self.rect.y <= 50 and -400 <= int(hero_x) - int(self.rect.x) <= 0:
             self.xvel = -MOVE_SPEED  # Лево = x- n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = False
             self.boltRunLeft.blit(self.image, (0, 0))
-        elif -50 <= int(hero_y) - 30 - self.rect.y <= 50 and 0 <= int(hero_x) - int(self.rect.x) <= 200:
+        elif -50 <= int(hero_y) - 30 - self.rect.y <= 50 and 0 <= int(hero_x) - int(self.rect.x) <= 400:
             self.xvel = MOVE_SPEED  # Право = x + n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = True

@@ -118,7 +118,7 @@ class Doctor(sprite.Sprite):
         self.startY = y
         self.yvel = 0  # скорость вертикального перемещения
 
-        self.POSITION_RIGHT = True
+        self.POSITION_RIGHT = False
         self.onGround = False  # На земле ли я?
         self.total_damage = 0
 
@@ -214,13 +214,13 @@ class Doctor(sprite.Sprite):
 
         # ____________________________________________________________________________________________________________________
 
-        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 200:
+        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 350:
             self.xvel = -MOVE_SPEED  # Лево = x- n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = False
             self.boltRunLeft.blit(self.image, (0, 0))
 
-        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= abs(int(hero_x) - int(self.rect.x)) <= 200:
+        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= abs(int(hero_x) - int(self.rect.x)) <= 350:
             self.xvel = MOVE_SPEED  # Право = x + n
             self.image.fill(Color(COLOR))
             self.POSITION_RIGHT = True

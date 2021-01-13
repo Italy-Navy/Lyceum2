@@ -90,16 +90,16 @@ class Plant(sprite.Sprite):
         self.boltAttackRight.play()
 
     def plant_behavior(self, hero_x, hero_y, platforms):
-        if int(hero_y) - 172 == self.startY and -20 <= int(hero_x) - int(self.rect.x) <= 0:
+        if int(hero_y) - 15 == self.rect.y and 0 <= int(hero_x) - int(self.startX) <= 50:
             self.xvel = 0
             self.image.fill(Color(COLOR))
-            self.POSITION_RIGHT = True
-            self.boltAttackRight.blit(self.image, (0, 0))
-        elif int(hero_y) - 172 == self.startY and -60 <= int(self.rect.x) - int(hero_x) <= 0:
-            self.xvel = 0
             self.POSITION_RIGHT = False
-            self.image.fill(Color(COLOR))
             self.boltAttackLeft.blit(self.image, (0, 0))
+        elif int(hero_y) - 15 == self.rect.y and -45 <= int(hero_x) - int(self.startX) <= 0:
+            self.xvel = 0
+            self.POSITION_RIGHT = True
+            self.image.fill(Color(COLOR))
+            self.boltAttackRight.blit(self.image, (0, 0))
         else:
             self.xvel = 0
             self.image.fill(Color(COLOR))

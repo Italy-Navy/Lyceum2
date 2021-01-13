@@ -261,8 +261,8 @@ class Player(sprite.Sprite):
         # ____________________________-HERO FEATURES-______________________________
 
         self.MOVE_SPEED = 4
-        self.JUMP_POWER = 8
-        self.GRAVITY = 0.35  # Сила, которая будет тянуть нас вниз
+        self.JUMP_POWER = 9
+        self.GRAVITY = 0.45  # Сила, которая будет тянуть нас вниз
         self.now_health_points = hero_hp
         self.max_health_points = 250
 

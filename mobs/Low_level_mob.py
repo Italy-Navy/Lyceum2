@@ -2,7 +2,7 @@ from pygame import *
 from hero import playanim as pyganim
 import os
 
-MOVE_SPEED = 1
+MOVE_SPEED = 2
 WIDTH = 15
 HEIGHT = 48
 COLOR = "#888888"
@@ -100,7 +100,7 @@ class LowLevelMob(sprite.Sprite):
         self.xvel = 0  # скорость перемещения. 0 - стоять на месте
         self.startX = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
         self.startY = y
-        self.POSITION_RIGHT = True
+        self.POSITION_RIGHT = False
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
         self.image = Surface((WIDTH + 10, HEIGHT + 20))

@@ -103,7 +103,7 @@ def save_game(x_hero, y_hero, hero_hp, json_dict):
         json.dump(json_dict, outfile)
 
 
-def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
+def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     json_file_object = open("options.json", "r")
@@ -124,16 +124,29 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
 
     hero = Player(x_hero_input, y_hero_input, now_hero_hp)  # создаем героя по (x,y) координатам
     doctor_mob1 = Doctor(1880, 670)
+    doctor_mob2 = Doctor(3350, 430)
+
     low_level_mob1 = LowLevelMob(900, 670)
     low_level_mob2 = LowLevelMob(1800, 530)
     low_level_mob3 = LowLevelMob(1500, 670)
+    low_level_mob4 = LowLevelMob(2820, 530)
+    low_level_mob5 = LowLevelMob(3180, 652)
+    low_level_mob6 = LowLevelMob(3500, 652)
+    low_level_mob7 = LowLevelMob(4700, 530)
+
     plant_mob1 = Plant(1420, 500)
-    plant_mob2 = Plant(1900, 450)
-    npc_worm = Worm(3000, 6700)
-    wizard_mob = Wizard(810, 400)
+    plant_mob2 = Plant(1960, 450)
+    plant_mob3 = Plant(3650, 530)
+    plant_mob4 = Plant(4410, 570)
+
+    npc_worm = Worm(5350, 670)
+
     hero_hp = health_bar(50, 30)
     fps_label = fps_measure(1200, 30)
-    sprout_mob = Sprout(2000, 540)
+
+    sprout_mob1 = Sprout(2020, 540)
+    sprout_mob2 = Sprout(2990, 430)
+    sprout_mob3 = Sprout(2660, 650)
 
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
@@ -167,13 +180,20 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
     entities.add(low_level_mob1)
     entities.add(low_level_mob2)
     entities.add(low_level_mob3)
+    entities.add(low_level_mob4)
+    entities.add(low_level_mob5)
+    entities.add(low_level_mob6)
+    entities.add(low_level_mob7)
     entities.add(plant_mob1)
     entities.add(plant_mob2)
+    entities.add(plant_mob3)
+    entities.add(plant_mob4)
     entities.add(npc_worm)
-    entities.add(wizard_mob)
     entities.add(hero_hp)
     entities.add(fps_label)
-    entities.add(sprout_mob)
+    entities.add(sprout_mob1)
+    entities.add(sprout_mob2)
+    entities.add(sprout_mob3)
 
     total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
@@ -301,11 +321,12 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
             screen.blit(bg_castle, (0, 0))
             screen.blit(transparent_surface, (0, 0))
             x_hero, x_origin, y_hero = hero.get_x_y()
-            print(x_hero, y_hero)
+            #print(x_hero, y_hero)
             hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
             camera.update(hero)  # центризируем камеру относительно персонажа
 
             doctor_mob1.doctor_behavior(x_hero, y_hero, platforms)
+            doctor_mob2.doctor_behavior(x_hero, y_hero, platforms)
 
             # _____________________________________-DAMAGE CALCULATING-_______________________________
 
@@ -313,10 +334,15 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
             now_hero_hp, max_hero_hp = hero.get_hp()
             hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
+            hero.give_damage(doctor_mob2.get_tick_damage())
+            now_hero_hp, max_hero_hp = hero.get_hp()
+            hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
             # ___________________________________-FROM HERO-_______________________________
 
             hero_damage, damage_delta = hero.make_damage()
             doctor_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+            doctor_mob2.dam_hero(hero_damage, x_hero, damage_delta)
 
             # ___________________________________-FROM HERO-_______________________________
 
@@ -325,10 +351,21 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
             low_level_mob1.low_level_mob_behavior(x_hero, y_hero, platforms)
             low_level_mob2.low_level_mob_behavior(x_hero, y_hero, platforms)
             low_level_mob3.low_level_mob_behavior(x_hero, y_hero, platforms)
+            low_level_mob4.low_level_mob_behavior(x_hero, y_hero, platforms)
+            low_level_mob5.low_level_mob_behavior(x_hero, y_hero, platforms)
+            low_level_mob6.low_level_mob_behavior(x_hero, y_hero, platforms)
+            low_level_mob7.low_level_mob_behavior(x_hero, y_hero, platforms)
+
             plant_mob1.plant_behavior(x_hero, y_hero, platforms)
             plant_mob2.plant_behavior(x_hero, y_hero, platforms)
+            plant_mob3.plant_behavior(x_hero, y_hero, platforms)
+            plant_mob4.plant_behavior(x_hero, y_hero, platforms)
+
             npc_worm.worm_behavior(x_hero, y_hero, platforms)
-            sprout_mob.sprout_behavior(x_hero, y_hero, platforms)
+
+            sprout_mob1.sprout_behavior(x_hero, y_hero, platforms)
+            sprout_mob2.sprout_behavior(x_hero, y_hero, platforms)
+            sprout_mob3.sprout_behavior(x_hero, y_hero, platforms)
 
             fps_label.update_fps(int(clock.get_fps()), camera.state.x)
 
@@ -338,6 +375,8 @@ def DrawLvl(x_hero_input=200, y_hero_input=500, now_hero_hp=250):
 
             screen.blit(doctor_mob1.image, camera.apply_new(
                 Rect(doctor_mob1.rect.x, doctor_mob1.rect.y + 15, doctor_mob1.rect.w, doctor_mob1.rect.h)))
+            screen.blit(doctor_mob2.image, camera.apply_new(
+                Rect(doctor_mob2.rect.x, doctor_mob2.rect.y + 15, doctor_mob2.rect.w, doctor_mob2.rect.h)))
 
 
             screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
