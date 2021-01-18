@@ -230,7 +230,7 @@ class Sprout(sprite.Sprite):
 
             if not self.onGround:
                 self.yvel += GRAVITY
-
+            #
             if self.max_hp != self.health_points:
                 self.image_hp.fill(Color(COLOR))
                 # self.image_hp.blit(pygame.transform.scale(load_image("bar.png"), (30, 11)), (0, 0))
