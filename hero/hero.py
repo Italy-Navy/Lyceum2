@@ -510,20 +510,21 @@ class Player(sprite.Sprite):
     def give_damage(self, value):
         if value != 0:
             self.image1.fill(Color(COLOR))
-            self.now_health_points -= value
-            if self.POSITION_RIGHT:
-                # self.boltCrouchRight.blit(self.image, (0, 10))
-                # self.boltCrouchRight.play()
-                self.on_attack = True
-            else:
-                # self.boltCrouchLeft.blit(self.image, (0, 10))
-                # self.boltCrouchLeft.play()
-                self.on_attack = True
+            if value is not None:
+                self.now_health_points -= value
+                if self.POSITION_RIGHT:
+                    # self.boltCrouchRight.blit(self.image, (0, 10))
+                    # self.boltCrouchRight.play()
+                    self.on_attack = True
+                else:
+                    # self.boltCrouchLeft.blit(self.image, (0, 10))
+                    # self.boltCrouchLeft.play()
+                    self.on_attack = True
 
     def make_damage(self):
         if self.flag_attack and self.is_damage:
             self.is_damage = False
-            print(1)
+            #print(1)
             if self.POSITION_RIGHT:
                 return rnd(self.attack_damage - 3, self.attack_damage + 3), 50
             return rnd(self.attack_damage - 3, self.attack_damage + 3), -50

@@ -120,7 +120,6 @@ class Doctor(sprite.Sprite):
 
         self.POSITION_RIGHT = False
         self.onGround = False  # На земле ли я?
-        self.total_damage = 0
 
         self.image = Surface((WIDTH + 10, HEIGHT + 40))
         self.image.fill(Color(COLOR))
@@ -178,90 +177,97 @@ class Doctor(sprite.Sprite):
             boltAnim.append((anim, ANIMATION_DELAY_ATTACK))
         self.boltAttackRight = pyganim.PygAnimation(boltAnim, loop=False)
 
+        self.total_damage = 0
         self.attack_time = self.boltAttackLeft.startTimes[-1]  # Брать из метода _startTimes текущей анимаци
         self.attack_flag = False
+        self._isdo = True
 
     def doctor_behavior(self, hero_x, hero_y, platforms):
-        # ____________________________________________________________________________________________________________________
+        if self.rect.x < hero_x - (32 * 20) or self.rect.x > hero_x + (32 * 20):
+            self._isdo = False
+            pass
+        else:
+            self._isdo = True
+            # ____________________________________________________________________________________________________________________
 
-        if -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(hero_x) - int(self.rect.x) <= 40 \
-                and self.POSITION_RIGHT:
-            self.xvel = 0
-            self.image.fill(Color(COLOR))
-            self.POSITION_RIGHT = True
-            self.boltAttackRight.blit(self.image, (0, 0))
-            self.boltAttackRight.play()
+            if -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(hero_x) - int(self.rect.x) <= 40 \
+                    and self.POSITION_RIGHT:
+                self.xvel = 0
+                self.image.fill(Color(COLOR))
+                self.POSITION_RIGHT = True
+                self.boltAttackRight.blit(self.image, (0, 0))
+                self.boltAttackRight.play()
 
-            if self.boltAttackRight.elapsed >= self.attack_time - 0.1 and not self.attack_flag:
-                self.boltAttackRight.stop()
-                self.attack_flag = True
-                self.total_damage += randint(self.damage - 6, self.damage + 2)
+                if self.boltAttackRight.elapsed >= self.attack_time - 0.1 and not self.attack_flag:
+                    self.boltAttackRight.stop()
+                    self.attack_flag = True
+                    self.total_damage += randint(self.damage - 6, self.damage + 2)
 
-        # ____________________________________________________________________________________________________________________
+            # ____________________________________________________________________________________________________________________
 
-        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 10 \
-                and not self.POSITION_RIGHT:
-            self.xvel = 0
-            self.POSITION_RIGHT = False
-            self.image.fill(Color(COLOR))
-            self.boltAttackLeft.blit(self.image, (0, 0))
-            self.boltAttackLeft.play()
+            elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 10 \
+                    and not self.POSITION_RIGHT:
+                self.xvel = 0
+                self.POSITION_RIGHT = False
+                self.image.fill(Color(COLOR))
+                self.boltAttackLeft.blit(self.image, (0, 0))
+                self.boltAttackLeft.play()
 
-            if self.boltAttackLeft.elapsed >= self.attack_time - 0.1 and not self.attack_flag:
-                self.boltAttackLeft.stop()
-                self.attack_flag = True
-                self.total_damage += randint(self.damage - 6, self.damage + 2)
+                if self.boltAttackLeft.elapsed >= self.attack_time - 0.1 and not self.attack_flag:
+                    self.boltAttackLeft.stop()
+                    self.attack_flag = True
+                    self.total_damage += randint(self.damage - 6, self.damage + 2)
 
-        # ____________________________________________________________________________________________________________________
+            # ____________________________________________________________________________________________________________________
 
-        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 350:
-            self.xvel = -MOVE_SPEED  # Лево = x- n
-            self.image.fill(Color(COLOR))
-            self.POSITION_RIGHT = False
-            self.boltRunLeft.blit(self.image, (0, 0))
+            elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= int(self.rect.x) - int(hero_x) <= 350:
+                self.xvel = -MOVE_SPEED  # Лево = x- n
+                self.image.fill(Color(COLOR))
+                self.POSITION_RIGHT = False
+                self.boltRunLeft.blit(self.image, (0, 0))
 
-        elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= abs(int(hero_x) - int(self.rect.x)) <= 350:
-            self.xvel = MOVE_SPEED  # Право = x + n
-            self.image.fill(Color(COLOR))
-            self.POSITION_RIGHT = True
-            self.boltRunRight.blit(self.image, (0, 0))
+            elif -75 <= int(hero_y) - 15 - self.rect.y <= 75 and 0 <= abs(int(hero_x) - int(self.rect.x)) <= 350:
+                self.xvel = MOVE_SPEED  # Право = x + n
+                self.image.fill(Color(COLOR))
+                self.POSITION_RIGHT = True
+                self.boltRunRight.blit(self.image, (0, 0))
 
-        elif self.POSITION_RIGHT:
-            self.xvel = 0
-            self.image.fill(Color(COLOR))
-            self.boltIdleRight.blit(self.image, (0, 0))
+            elif self.POSITION_RIGHT:
+                self.xvel = 0
+                self.image.fill(Color(COLOR))
+                self.boltIdleRight.blit(self.image, (0, 0))
 
-        elif not self.POSITION_RIGHT:
-            self.xvel = 0
-            self.image.fill(Color(COLOR))
-            self.boltIdleLeft.blit(self.image, (0, 0))
+            elif not self.POSITION_RIGHT:
+                self.xvel = 0
+                self.image.fill(Color(COLOR))
+                self.boltIdleLeft.blit(self.image, (0, 0))
 
-        if not self.onGround:
-            self.yvel += GRAVITY
+            if not self.onGround:
+                self.yvel += GRAVITY
 
-        if self.max_hp != self.health_points:
-            self.image_hp.fill(Color(COLOR))
-            #self.image_hp.blit(pygame.transform.scale(load_image("bar.png"), (30, 11)), (0, 0))
-            base_x = 0
-            num_hp = int(self.health_points / self.max_hp * 100 / 6.25)
-            print(num_hp)
-            for i in range(num_hp):
-                self.image_hp.blit(pygame.transform.scale(load_image("bar_part_2.png"), (2, 7)), (base_x, 0))
-                base_x += 2
-            if self.POSITION_RIGHT:
-                self.image.blit(self.image_hp, (5, 70))
-            else:
-                self.image.blit(self.image_hp, (30, 70))
+            if self.max_hp != self.health_points:
+                self.image_hp.fill(Color(COLOR))
+                # self.image_hp.blit(pygame.transform.scale(load_image("bar.png"), (30, 11)), (0, 0))
+                base_x = 0
+                num_hp = int(self.health_points / self.max_hp * 100 / 6.25)
+                # print(num_hp)
+                for i in range(num_hp):
+                    self.image_hp.blit(pygame.transform.scale(load_image("bar_part_2.png"), (2, 7)), (base_x, 0))
+                    base_x += 2
+                if self.POSITION_RIGHT:
+                    self.image.blit(self.image_hp, (5, 70))
+                else:
+                    self.image.blit(self.image_hp, (30, 70))
 
-        if self.health_points <= 0:
-            self.rect.y = 3000
+            if self.health_points <= 0:
+                self.rect.y = 3000
 
-        self.onGround = False  # Мы не знаем, когда мы на земле((
-        self.rect.y += self.yvel
-        self.collide(0, self.yvel, platforms)
+            self.onGround = False  # Мы не знаем, когда мы на земле((
+            self.rect.y += self.yvel
+            self.collide(0, self.yvel, platforms)
 
-        self.rect.x += self.xvel  # переносим свои положение на xvel
-        self.collide(self.xvel, 0, platforms)
+            self.rect.x += self.xvel  # переносим свои положение на xvel
+            self.collide(self.xvel, 0, platforms)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
@@ -292,8 +298,11 @@ class Doctor(sprite.Sprite):
             if delta > 0:
                 if x_hero <= self.rect.x <= x_hero + delta:
                     self.health_points -= value
-                    print(value)
+                    # print(value)
             if delta < 0:
                 if x_hero + delta <= self.rect.x <= x_hero:
                     self.health_points -= value
-                    print(value)
+                    # print(value)
+
+    def state(self):
+        return self._isdo

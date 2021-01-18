@@ -6,8 +6,6 @@ from hero.hero import *
 from mobs.Low_level_mob import *
 from mobs.Plant import *
 from mobs.NPC_Worm import *
-from mobs.Wizard import *
-from mobs.Fireball import *
 from hero.hero_hp import *
 from fps_measurement import *
 import option_menu as options
@@ -141,8 +139,8 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
 
     npc_worm = Worm(5350, 670)
 
-    hero_hp = health_bar(50, 30)
-    fps_label = fps_measure(1200, 30)
+    hero_hp = health_bar(50, 70)
+    fps_label = fps_measure(1200, 70)
 
     sprout_mob1 = Sprout(2020, 540)
     sprout_mob2 = Sprout(2990, 430)
@@ -175,25 +173,30 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
+    mob_entities = pygame.sprite.Group()  # Все объекты
+    plant_entities = pygame.sprite.Group()
+    sprout_entities = pygame.sprite.Group()
+
     # entities.add(doctor_mob1)
     # entities.add(doctor_mob2)
-    entities.add(low_level_mob1)
-    entities.add(low_level_mob2)
-    entities.add(low_level_mob3)
-    entities.add(low_level_mob4)
-    entities.add(low_level_mob5)
-    entities.add(low_level_mob6)
-    entities.add(low_level_mob7)
-    entities.add(plant_mob1)
-    entities.add(plant_mob2)
-    entities.add(plant_mob3)
-    entities.add(plant_mob4)
+    mob_entities.add(low_level_mob1)
+    mob_entities.add(low_level_mob2)
+    mob_entities.add(low_level_mob3)
+    mob_entities.add(low_level_mob4)
+    mob_entities.add(low_level_mob5)
+    mob_entities.add(low_level_mob6)
+    mob_entities.add(low_level_mob7)
+
+    plant_entities.add(plant_mob1)
+    plant_entities.add(plant_mob2)
+    plant_entities.add(plant_mob3)
+    plant_entities.add(plant_mob4)
     entities.add(npc_worm)
     entities.add(hero_hp)
-    entities.add(fps_label)
-    entities.add(sprout_mob1)
-    entities.add(sprout_mob2)
-    entities.add(sprout_mob3)
+    # entities.add(fps_label)
+    sprout_entities.add(sprout_mob1)
+    sprout_entities.add(sprout_mob2)
+    sprout_entities.add(sprout_mob3)
 
     total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
@@ -321,7 +324,7 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
             screen.blit(bg_castle, (0, 0))
             screen.blit(transparent_surface, (0, 0))
             x_hero, x_origin, y_hero = hero.get_x_y()
-            #print(x_hero, y_hero)
+            # print(x_hero, y_hero)
             hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
             camera.update(hero)  # центризируем камеру относительно персонажа
 
@@ -330,21 +333,119 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
 
             # _____________________________________-DAMAGE CALCULATING-_______________________________
 
-            hero.give_damage(doctor_mob1.get_tick_damage())
-            now_hero_hp, max_hero_hp = hero.get_hp()
-            hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
-
-            hero.give_damage(doctor_mob2.get_tick_damage())
-            now_hero_hp, max_hero_hp = hero.get_hp()
-            hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
-
-            # ___________________________________-FROM HERO-_______________________________
-
             hero_damage, damage_delta = hero.make_damage()
-            doctor_mob1.dam_hero(hero_damage, x_hero, damage_delta)
-            doctor_mob2.dam_hero(hero_damage, x_hero, damage_delta)
 
-            # ___________________________________-FROM HERO-_______________________________
+            if doctor_mob1.state():
+                hero.give_damage(doctor_mob1.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                doctor_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if doctor_mob2.state():
+                hero.give_damage(doctor_mob2.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                doctor_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if plant_mob1.state():
+                hero.give_damage(plant_mob1.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                plant_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if plant_mob2.state():
+                hero.give_damage(plant_mob2.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                plant_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if plant_mob3.state():
+                hero.give_damage(plant_mob3.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                plant_mob3.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if plant_mob4.state():
+                hero.give_damage(plant_mob4.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                plant_mob4.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if low_level_mob1.state():
+                hero.give_damage(low_level_mob1.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                low_level_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if low_level_mob2.state():
+                hero.give_damage(low_level_mob2.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                low_level_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if low_level_mob3.state():
+                hero.give_damage(low_level_mob3.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                low_level_mob3.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if low_level_mob4.state():
+                hero.give_damage(low_level_mob4.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                low_level_mob4.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if low_level_mob5.state():
+                hero.give_damage(low_level_mob5.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                low_level_mob5.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if low_level_mob6.state():
+                hero.give_damage(low_level_mob6.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                low_level_mob6.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if low_level_mob7.state():
+                hero.give_damage(low_level_mob7.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                low_level_mob7.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if sprout_mob1.state():
+                hero.give_damage(sprout_mob1.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                sprout_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if sprout_mob2.state():
+                hero.give_damage(sprout_mob2.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                sprout_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+
+            if sprout_mob3.state():
+                hero.give_damage(sprout_mob3.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+
+                sprout_mob3.dam_hero(hero_damage, x_hero, damage_delta)
 
             # _____________________________________-DAMAGE CALCULATING-_______________________________
 
@@ -373,11 +474,24 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
                 screen.blit(element.image, camera.apply(element))
             screen.blit(hero_hp.image, camera.apply(hero_hp))
 
+            screen.blit(fps_label.image, camera.apply(fps_label))
+
             screen.blit(doctor_mob1.image, camera.apply_new(
                 Rect(doctor_mob1.rect.x, doctor_mob1.rect.y + 15, doctor_mob1.rect.w, doctor_mob1.rect.h)))
             screen.blit(doctor_mob2.image, camera.apply_new(
                 Rect(doctor_mob2.rect.x, doctor_mob2.rect.y + 15, doctor_mob2.rect.w, doctor_mob2.rect.h)))
 
+            for element in mob_entities:
+                screen.blit(element.image,
+                            camera.apply_new(Rect(element.rect.x, element.rect.y + 25, element.rect.w, element.rect.h)))
+
+            for element in plant_entities:
+                screen.blit(element.image,
+                            camera.apply_new(Rect(element.rect.x, element.rect.y + 8, element.rect.w, element.rect.h)))
+
+            for element in sprout_entities:
+                screen.blit(element.image,
+                            camera.apply_new(Rect(element.rect.x, element.rect.y + 20, element.rect.w, element.rect.h)))
 
             screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
             # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))

@@ -118,7 +118,7 @@ class Worm(sprite.Sprite):
 
         self.rect.x += self.xvel  # переносим свои положение на xvel
         self.collide(self.xvel, 0, platforms)
-        print(self.rect.x, self.rect.y, hero_y, hero_x)
+        #print(self.rect.x, self.rect.y, hero_y, hero_x)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
