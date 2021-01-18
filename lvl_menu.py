@@ -2,6 +2,7 @@ import json
 import os
 import sys
 import lvls.lvl_1 as lvl1
+import lvls.lvl_2 as lvl2
 
 import pygame
 from pygame import *
@@ -100,7 +101,7 @@ def lvl_menu():
                             flag_draw_lock = True
                     if now_menu == 2:
                         if L2:
-                            pass
+                            lvl2.DrawLvl()
                         else:
                             flag_draw_lock = True
                     if now_menu == 3:
