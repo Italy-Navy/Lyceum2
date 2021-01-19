@@ -78,17 +78,23 @@ def camera_configure(camera, target_rect):
     return Rect(l, t, w, h)
 
 
-def battle_music():
+def battle_music(_isLive=True):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
     json_file_object_music = open("options.json", "r")
     json_dict_music = json.load(json_file_object_music)
     json_file_object_music.close()
     # __________________________________-DOWNLOAD OPTIONS-________________________________
     value = json_dict_music["music_value"] - int(json_dict_music["music_value"] / 2)
-    if randint(1, 1) == 1:
-        pygame.mixer.music.load('%s/../../data/music/battle.mp3' % __file__)
-    pygame.mixer.music.set_volume(value)
-    pygame.mixer.music.play(-1)
+    if _isLive:
+        if randint(1, 1) == 1:
+            pygame.mixer.music.load('%s/../../data/music/battle.mp3' % __file__)
+        pygame.mixer.music.set_volume(value)
+        pygame.mixer.music.play(-1)
+    else:
+        print("LOL YOU DIE HAHAHAHHAHAHAHAHA")
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load('%s/../../data/music/death.mp3' % __file__)
+        pygame.mixer.music.play()
 
 
 def save_game(x_hero, y_hero, hero_hp, json_dict):
@@ -96,9 +102,27 @@ def save_game(x_hero, y_hero, hero_hp, json_dict):
     save_dict["x_hero"] = x_hero
     save_dict["y_hero"] = y_hero
     save_dict["hp_hero"] = hero_hp
+    save_dict["last_lvl"] = 1
     json_dict["Save"] = save_dict
     with open('options.json', 'w') as outfile:
         json.dump(json_dict, outfile)
+
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join(("%s/../../data/assets/" % __file__), name)
+    # если файл не существует, то выходим
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    LI_image = pygame.image.load(fullname)
+    if colorkey is not None:
+        LI_image = LI_image.convert()
+        if colorkey == -1:
+            colorkey = LI_image.get_at((0, 0))
+        LI_image.set_colorkey(colorkey)
+    else:
+        LI_image = LI_image.convert_alpha()
+    return LI_image
 
 
 def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
@@ -111,8 +135,9 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
 
     pygame.init()  # Инициация PyGame, обязательная строчка
-
-    battle_music()
+    _isAlive = True
+    _is_music_pause = True
+    battle_music(_isLive=_isAlive)
     save_flag = False
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Dungeon adventure")  # Пишем в шапку
@@ -217,11 +242,16 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
     transparent_surface.set_alpha(50)
     transparent_surface.fill((50, 50, 50))
 
+    transparent_death = pygame.Surface((1280, 720))
+    transparent_death.set_alpha(255)
+    transparent_death.fill((0, 0, 0))
+
     pause_menu = 1
 
     main_font = pygame.font.SysFont('Comic Sans MS', 130)
     label_font = pygame.font.SysFont('Comic Sans MS', 50)
-
+    back_font = pygame.font.SysFont('Comic Sans MS', 50)
+    bacK_label = back_font.render('<<Back to menu', False, (153, 24, 24))
     pause_label = main_font.render('Pause', False, (255, 255, 255))
 
     running = True
@@ -231,6 +261,10 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
             if event.type == QUIT:
                 running = False
                 sys.exit()
+            if not _isAlive:
+                if event.type == KEYDOWN:
+                    if event.key == K_RETURN:
+                        running = False
             elif event.type == KEYDOWN:
                 if event.key == K_d:
                     right = True
@@ -287,224 +321,243 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
             if pause_menu < 1:
                 pause_menu = 1
 
-        if global_pause:
-            if not use_pause:
-                screen.blit(transparent_pause, (0, 0))
-                screen.blit(pause_label, (475, 50))
-                use_pause = True
-            if pause_menu == 1:
-                continue_label = label_font.render('Continue', False, (170, 170, 170))
-                save_label = label_font.render('Save the game', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (255, 255, 255))
-                exit_label = label_font.render('Back to menu', False, (255, 255, 255))
-            if pause_menu == 2:
-                if green_label:
-                    save_label = label_font.render('Save the game', False, (80, 255, 80))
-                else:
-                    save_label = label_font.render('Save the game', False, (170, 170, 170))
-                continue_label = label_font.render('Continue', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (255, 255, 255))
-                exit_label = label_font.render('Back to menu', False, (255, 255, 255))
-            if pause_menu == 3:
-                continue_label = label_font.render('Continue', False, (255, 255, 255))
-                save_label = label_font.render('Save the game', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (170, 170, 170))
-                exit_label = label_font.render('Back to menu', False, (255, 255, 255))
-            if pause_menu == 4:
-                continue_label = label_font.render('Continue', False, (255, 255, 255))
-                save_label = label_font.render('Save the game', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (255, 255, 255))
-                exit_label = label_font.render('Back to menu', False, (170, 170, 170))
-            screen.blit(continue_label, (540, 300))
-            screen.blit(save_label, (475, 370))
-            screen.blit(options_label, (547, 440))
-            screen.blit(exit_label, (493, 510))
+        if not _isAlive:
+            screen.blit(transparent_death, (0, 0))
+
+            screen.blit(pygame.transform.scale(load_image("game_over.png"), (300, 100)), (460, 250))
+            screen.blit(bacK_label, (380, 420))
+
+            if _is_music_pause:
+                pygame.mixer.music.stop()
+                print(2)
+                battle_music(_isLive=False)
+                _is_music_pause = False
 
         else:
-            screen.blit(bg_castle, (0, 0))
-            screen.blit(transparent_surface, (0, 0))
-            x_hero, x_origin, y_hero = hero.get_x_y()
-            # print(x_hero, y_hero)
-            hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
-            camera.update(hero)  # центризируем камеру относительно персонажа
+            if global_pause:
+                if not use_pause:
+                    screen.blit(transparent_pause, (0, 0))
+                    screen.blit(pause_label, (475, 50))
+                    use_pause = True
+                if pause_menu == 1:
+                    continue_label = label_font.render('Continue', False, (170, 170, 170))
+                    save_label = label_font.render('Save the game', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (255, 255, 255))
+                    exit_label = label_font.render('Back to menu', False, (255, 255, 255))
+                if pause_menu == 2:
+                    if green_label:
+                        save_label = label_font.render('Save the game', False, (80, 255, 80))
+                    else:
+                        save_label = label_font.render('Save the game', False, (170, 170, 170))
+                    continue_label = label_font.render('Continue', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (255, 255, 255))
+                    exit_label = label_font.render('Back to menu', False, (255, 255, 255))
+                if pause_menu == 3:
+                    continue_label = label_font.render('Continue', False, (255, 255, 255))
+                    save_label = label_font.render('Save the game', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (170, 170, 170))
+                    exit_label = label_font.render('Back to menu', False, (255, 255, 255))
+                if pause_menu == 4:
+                    continue_label = label_font.render('Continue', False, (255, 255, 255))
+                    save_label = label_font.render('Save the game', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (255, 255, 255))
+                    exit_label = label_font.render('Back to menu', False, (170, 170, 170))
+                screen.blit(continue_label, (540, 300))
+                screen.blit(save_label, (475, 370))
+                screen.blit(options_label, (547, 440))
+                screen.blit(exit_label, (493, 510))
 
-            doctor_mob1.doctor_behavior(x_hero, y_hero, platforms)
-            doctor_mob2.doctor_behavior(x_hero, y_hero, platforms)
+            else:
+                screen.blit(bg_castle, (0, 0))
+                screen.blit(transparent_surface, (0, 0))
+                x_hero, x_origin, y_hero = hero.get_x_y()
+                # print(x_hero, y_hero)
+                hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
+                camera.update(hero)  # центризируем камеру относительно персонажа
 
-            # _____________________________________-DAMAGE CALCULATING-_______________________________
+                doctor_mob1.doctor_behavior(x_hero, y_hero, platforms)
+                doctor_mob2.doctor_behavior(x_hero, y_hero, platforms)
 
-            hero_damage, damage_delta = hero.make_damage()
+                # _____________________________________-DAMAGE CALCULATING-_______________________________
 
-            if doctor_mob1.state():
-                hero.give_damage(doctor_mob1.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                hero_damage, damage_delta = hero.make_damage()
 
-                doctor_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+                if doctor_mob1.state():
+                    hero.give_damage(doctor_mob1.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if doctor_mob2.state():
-                hero.give_damage(doctor_mob2.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    doctor_mob1.dam_hero(hero_damage, x_hero, damage_delta)
 
-                doctor_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+                if doctor_mob2.state():
+                    hero.give_damage(doctor_mob2.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if plant_mob1.state():
-                hero.give_damage(plant_mob1.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    doctor_mob2.dam_hero(hero_damage, x_hero, damage_delta)
 
-                plant_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+                if plant_mob1.state():
+                    hero.give_damage(plant_mob1.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if plant_mob2.state():
-                hero.give_damage(plant_mob2.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    plant_mob1.dam_hero(hero_damage, x_hero, damage_delta)
 
-                plant_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+                if plant_mob2.state():
+                    hero.give_damage(plant_mob2.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if plant_mob3.state():
-                hero.give_damage(plant_mob3.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    plant_mob2.dam_hero(hero_damage, x_hero, damage_delta)
 
-                plant_mob3.dam_hero(hero_damage, x_hero, damage_delta)
+                if plant_mob3.state():
+                    hero.give_damage(plant_mob3.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if plant_mob4.state():
-                hero.give_damage(plant_mob4.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    plant_mob3.dam_hero(hero_damage, x_hero, damage_delta)
 
-                plant_mob4.dam_hero(hero_damage, x_hero, damage_delta)
+                if plant_mob4.state():
+                    hero.give_damage(plant_mob4.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if low_level_mob1.state():
-                hero.give_damage(low_level_mob1.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    plant_mob4.dam_hero(hero_damage, x_hero, damage_delta)
 
-                low_level_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+                if low_level_mob1.state():
+                    hero.give_damage(low_level_mob1.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if low_level_mob2.state():
-                hero.give_damage(low_level_mob2.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    low_level_mob1.dam_hero(hero_damage, x_hero, damage_delta)
 
-                low_level_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+                if low_level_mob2.state():
+                    hero.give_damage(low_level_mob2.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if low_level_mob3.state():
-                hero.give_damage(low_level_mob3.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    low_level_mob2.dam_hero(hero_damage, x_hero, damage_delta)
 
-                low_level_mob3.dam_hero(hero_damage, x_hero, damage_delta)
+                if low_level_mob3.state():
+                    hero.give_damage(low_level_mob3.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if low_level_mob4.state():
-                hero.give_damage(low_level_mob4.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    low_level_mob3.dam_hero(hero_damage, x_hero, damage_delta)
 
-                low_level_mob4.dam_hero(hero_damage, x_hero, damage_delta)
+                if low_level_mob4.state():
+                    hero.give_damage(low_level_mob4.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if low_level_mob5.state():
-                hero.give_damage(low_level_mob5.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    low_level_mob4.dam_hero(hero_damage, x_hero, damage_delta)
 
-                low_level_mob5.dam_hero(hero_damage, x_hero, damage_delta)
+                if low_level_mob5.state():
+                    hero.give_damage(low_level_mob5.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if low_level_mob6.state():
-                hero.give_damage(low_level_mob6.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    low_level_mob5.dam_hero(hero_damage, x_hero, damage_delta)
 
-                low_level_mob6.dam_hero(hero_damage, x_hero, damage_delta)
+                if low_level_mob6.state():
+                    hero.give_damage(low_level_mob6.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if low_level_mob7.state():
-                hero.give_damage(low_level_mob7.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    low_level_mob6.dam_hero(hero_damage, x_hero, damage_delta)
 
-                low_level_mob7.dam_hero(hero_damage, x_hero, damage_delta)
+                if low_level_mob7.state():
+                    hero.give_damage(low_level_mob7.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if sprout_mob1.state():
-                hero.give_damage(sprout_mob1.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    low_level_mob7.dam_hero(hero_damage, x_hero, damage_delta)
 
-                sprout_mob1.dam_hero(hero_damage, x_hero, damage_delta)
+                if sprout_mob1.state():
+                    hero.give_damage(sprout_mob1.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if sprout_mob2.state():
-                hero.give_damage(sprout_mob2.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    sprout_mob1.dam_hero(hero_damage, x_hero, damage_delta)
 
-                sprout_mob2.dam_hero(hero_damage, x_hero, damage_delta)
+                if sprout_mob2.state():
+                    hero.give_damage(sprout_mob2.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            if sprout_mob3.state():
-                hero.give_damage(sprout_mob3.get_tick_damage())
-                now_hero_hp, max_hero_hp = hero.get_hp()
-                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                    sprout_mob2.dam_hero(hero_damage, x_hero, damage_delta)
 
-                sprout_mob3.dam_hero(hero_damage, x_hero, damage_delta)
+                if sprout_mob3.state():
+                    hero.give_damage(sprout_mob3.get_tick_damage())
+                    now_hero_hp, max_hero_hp = hero.get_hp()
+                    hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
 
-            # _____________________________________-DAMAGE CALCULATING-_______________________________
+                    sprout_mob3.dam_hero(hero_damage, x_hero, damage_delta)
 
-            low_level_mob1.low_level_mob_behavior(x_hero, y_hero, platforms)
-            low_level_mob2.low_level_mob_behavior(x_hero, y_hero, platforms)
-            low_level_mob3.low_level_mob_behavior(x_hero, y_hero, platforms)
-            low_level_mob4.low_level_mob_behavior(x_hero, y_hero, platforms)
-            low_level_mob5.low_level_mob_behavior(x_hero, y_hero, platforms)
-            low_level_mob6.low_level_mob_behavior(x_hero, y_hero, platforms)
-            low_level_mob7.low_level_mob_behavior(x_hero, y_hero, platforms)
+                if now_hero_hp <= 0:
+                    _isAlive = False
+                # _____________________________________-DAMAGE CALCULATING-_______________________________
 
-            plant_mob1.plant_behavior(x_hero, y_hero, platforms)
-            plant_mob2.plant_behavior(x_hero, y_hero, platforms)
-            plant_mob3.plant_behavior(x_hero, y_hero, platforms)
-            plant_mob4.plant_behavior(x_hero, y_hero, platforms)
+                low_level_mob1.low_level_mob_behavior(x_hero, y_hero, platforms)
+                low_level_mob2.low_level_mob_behavior(x_hero, y_hero, platforms)
+                low_level_mob3.low_level_mob_behavior(x_hero, y_hero, platforms)
+                low_level_mob4.low_level_mob_behavior(x_hero, y_hero, platforms)
+                low_level_mob5.low_level_mob_behavior(x_hero, y_hero, platforms)
+                low_level_mob6.low_level_mob_behavior(x_hero, y_hero, platforms)
+                low_level_mob7.low_level_mob_behavior(x_hero, y_hero, platforms)
 
-            npc_worm.worm_behavior(x_hero, y_hero, platforms)
+                plant_mob1.plant_behavior(x_hero, y_hero, platforms)
+                plant_mob2.plant_behavior(x_hero, y_hero, platforms)
+                plant_mob3.plant_behavior(x_hero, y_hero, platforms)
+                plant_mob4.plant_behavior(x_hero, y_hero, platforms)
 
-            sprout_mob1.sprout_behavior(x_hero, y_hero, platforms)
-            sprout_mob2.sprout_behavior(x_hero, y_hero, platforms)
-            sprout_mob3.sprout_behavior(x_hero, y_hero, platforms)
+                npc_worm.worm_behavior(x_hero, y_hero, platforms)
 
-            fps_label.update_fps(int(clock.get_fps()), camera.state.x)
+                sprout_mob1.sprout_behavior(x_hero, y_hero, platforms)
+                sprout_mob2.sprout_behavior(x_hero, y_hero, platforms)
+                sprout_mob3.sprout_behavior(x_hero, y_hero, platforms)
 
-            for element in entities:
-                screen.blit(element.image, camera.apply(element))
-            screen.blit(hero_hp.image, camera.apply(hero_hp))
+                fps_label.update_fps(int(clock.get_fps()), camera.state.x)
 
-            screen.blit(fps_label.image, camera.apply(fps_label))
+                for element in entities:
+                    screen.blit(element.image, camera.apply(element))
+                screen.blit(hero_hp.image, camera.apply(hero_hp))
 
-            screen.blit(doctor_mob1.image, camera.apply_new(
-                Rect(doctor_mob1.rect.x, doctor_mob1.rect.y + 15, doctor_mob1.rect.w, doctor_mob1.rect.h)))
-            screen.blit(doctor_mob2.image, camera.apply_new(
-                Rect(doctor_mob2.rect.x, doctor_mob2.rect.y + 15, doctor_mob2.rect.w, doctor_mob2.rect.h)))
+                screen.blit(fps_label.image, camera.apply(fps_label))
 
-            for element in mob_entities:
-                screen.blit(element.image,
-                            camera.apply_new(Rect(element.rect.x, element.rect.y + 25, element.rect.w, element.rect.h)))
+                screen.blit(doctor_mob1.image, camera.apply_new(
+                    Rect(doctor_mob1.rect.x, doctor_mob1.rect.y + 15, doctor_mob1.rect.w, doctor_mob1.rect.h)))
+                screen.blit(doctor_mob2.image, camera.apply_new(
+                    Rect(doctor_mob2.rect.x, doctor_mob2.rect.y + 15, doctor_mob2.rect.w, doctor_mob2.rect.h)))
 
-            for element in plant_entities:
-                screen.blit(element.image,
-                            camera.apply_new(Rect(element.rect.x, element.rect.y + 8, element.rect.w, element.rect.h)))
+                for element in mob_entities:
+                    screen.blit(element.image,
+                                camera.apply_new(
+                                    Rect(element.rect.x, element.rect.y + 25, element.rect.w, element.rect.h)))
 
-            for element in sprout_entities:
-                screen.blit(element.image,
-                            camera.apply_new(Rect(element.rect.x, element.rect.y + 20, element.rect.w, element.rect.h)))
+                for element in plant_entities:
+                    screen.blit(element.image,
+                                camera.apply_new(
+                                    Rect(element.rect.x, element.rect.y + 8, element.rect.w, element.rect.h)))
 
-            screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
-            # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))
-            # screen.blit(hero.image, camera.apply(hero))
+                for element in sprout_entities:
+                    screen.blit(element.image,
+                                camera.apply_new(
+                                    Rect(element.rect.x, element.rect.y + 20, element.rect.w, element.rect.h)))
 
-        if hero.flag_to_stop():
-            running = False
-            pygame.mixer.music.stop()
+                screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
+                # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))
+                # screen.blit(hero.image, camera.apply(hero))
 
-        if save_flag:
-            save_game(x_origin, y_hero, now_hero_hp, json_dict)
-            green_label = True
-            save_flag = False
+            if hero.flag_to_stop():
+                # running = False
+                # pygame.mixer.music.stop()
+                pass
+
+            if save_flag:
+                save_game(x_origin, y_hero, now_hero_hp, json_dict)
+                green_label = True
+                save_flag = False
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()

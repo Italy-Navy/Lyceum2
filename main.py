@@ -9,6 +9,7 @@ from pygame import *
 
 import option_menu as options
 import lvls.lvl_1 as lvl1
+import lvls.lvl_2 as lvl2
 
 WIN_WIDTH = 1280  # Ширина создаваемого окна
 WIN_HEIGHT = 720  # Высота
@@ -97,6 +98,8 @@ if __name__ == "__main__":
                     if now_menu == 1:
                         if json_dict["last_lvl"] == 1:
                             lvl1.DrawLvl(*prepare_save_file(json_dict))
+                        if json_dict["last_lvl"] == 2:
+                            lvl2.DrawLvl(*prepare_save_file(json_dict))
                     if now_menu == 2:
                         lvl_menu.lvl_menu()
                         menu_music()

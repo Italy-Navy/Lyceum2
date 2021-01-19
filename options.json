@@ -1,1 +1,9 @@
-{"FPS": 60, "last_lvl": 1, "Save": {"x_hero": 418, "y_hero": 491, "hp_hero": 250}, "Location_1": "open", "Location_2": "open", "Location_3": "close", "music_value": 100}
+{
+  "FPS": 60,
+  "last_lvl": 2,
+  "Save": null,
+  "Location_1": "open",
+  "Location_2": "open",
+  "Location_3": "close",
+  "music_value": 100
+}

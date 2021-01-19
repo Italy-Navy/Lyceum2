@@ -3,9 +3,10 @@ import json
 from mobs.Doctor import *
 from lvls.blocks import *
 from hero.hero import *
+from hero.hero_hp import *
 from fps_measurement import *
 import option_menu as options
-from mobs.Boss import *
+import mobs.Boss_code as Boss_code
 
 # Объявляем переменные
 WIN_WIDTH = 1280  # Ширина создаваемого окна
@@ -28,6 +29,23 @@ def load_level(filename):
 
     # дополняем каждую строку пустыми клетками ('.')
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join(("%s/../../data/assets/" % __file__), name)
+    # если файл не существует, то выходим
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    LI_image = pygame.image.load(fullname)
+    if colorkey is not None:
+        LI_image = LI_image.convert()
+        if colorkey == -1:
+            colorkey = LI_image.get_at((0, 0))
+        LI_image.set_colorkey(colorkey)
+    else:
+        LI_image = LI_image.convert_alpha()
+    return LI_image
 
 
 def load_bg(name, colorkey=None):
@@ -74,17 +92,23 @@ def camera_configure(camera, target_rect):
     return Rect(l, t, w, h)
 
 
-def battle_music():
+def battle_music(_isLive=True):
     # __________________________________-DOWNLOAD OPTIONS-________________________________
     json_file_object_music = open("options.json", "r")
     json_dict_music = json.load(json_file_object_music)
     json_file_object_music.close()
     # __________________________________-DOWNLOAD OPTIONS-________________________________
     value = json_dict_music["music_value"] - int(json_dict_music["music_value"] / 2)
-    if randint(1, 1) == 1:
-        pygame.mixer.music.load('%s/../../data/music/battle.mp3' % __file__)
-    pygame.mixer.music.set_volume(value)
-    pygame.mixer.music.play(-1)
+    if _isLive:
+        if randint(1, 1) == 1:
+            pygame.mixer.music.load('%s/../../data/music/battle.mp3' % __file__)
+        pygame.mixer.music.set_volume(value)
+        pygame.mixer.music.play(-1)
+    else:
+        print("LOL YOU DIE HAHAHAHHAHAHAHAHA")
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load('%s/../../data/music/death.mp3' % __file__)
+        pygame.mixer.music.play()
 
 
 def save_game(x_hero, y_hero, hero_hp, json_dict):
@@ -92,6 +116,7 @@ def save_game(x_hero, y_hero, hero_hp, json_dict):
     save_dict["x_hero"] = x_hero
     save_dict["y_hero"] = y_hero
     save_dict["hp_hero"] = hero_hp
+    json_dict["last_lvl"] = 2
     json_dict["Save"] = save_dict
     with open('options.json', 'w') as outfile:
         json.dump(json_dict, outfile)
@@ -108,7 +133,9 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
 
     pygame.init()  # Инициация PyGame, обязательная строчка
 
-    battle_music()
+    _isAlive = True
+    _is_music_pause = True
+    battle_music(_isLive=_isAlive)
     save_flag = False
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Dungeon adventure")  # Пишем в шапку
@@ -118,7 +145,10 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
 
     hero = Player(x_hero_input, y_hero_input, now_hero_hp)  # создаем героя по (x,y) координатам
 
-    boss = Boss(200, 500)
+    boss = Boss_code.Boss(200, 500)
+
+    hero_hp = health_bar(50, 70)
+    fps_label = fps_measure(1200, 70)
 
     left = right = False  # по умолчанию - стоим
     attack = up = ability = False
@@ -148,6 +178,8 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
         x = 0  # на каждой новой строчке начинаем с нуля
 
     entities.add(boss)
+    entities.add(hero_hp)
+    entities.add(fps_label)
 
     total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
@@ -173,6 +205,13 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
     main_font = pygame.font.SysFont('Comic Sans MS', 130)
     label_font = pygame.font.SysFont('Comic Sans MS', 50)
 
+    transparent_death = pygame.Surface((1280, 720))
+    transparent_death.set_alpha(255)
+    transparent_death.fill((0, 0, 0))
+
+    back_font = pygame.font.SysFont('Comic Sans MS', 50)
+    bacK_label = back_font.render('<<Back to menu', False, (153, 24, 24))
+
     pause_label = main_font.render('Pause', False, (255, 255, 255))
 
     running = True
@@ -182,6 +221,10 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
             if event.type == QUIT:
                 running = False
                 sys.exit()
+            if not _isAlive:
+                if event.type == KEYDOWN:
+                    if event.key == K_RETURN:
+                        running = False
             elif event.type == KEYDOWN:
                 if event.key == K_d:
                     right = True
@@ -238,74 +281,90 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
             if pause_menu < 1:
                 pause_menu = 1
 
-        if global_pause:
-            if not use_pause:
-                screen.blit(transparent_pause, (0, 0))
-                screen.blit(pause_label, (475, 50))
-                use_pause = True
-            if pause_menu == 1:
-                continue_label = label_font.render('Continue', False, (170, 170, 170))
-                save_label = label_font.render('Save the game', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (255, 255, 255))
-                exit_label = label_font.render('Back to menu', False, (255, 255, 255))
-            if pause_menu == 2:
-                if green_label:
-                    save_label = label_font.render('Save the game', False, (80, 255, 80))
-                else:
-                    save_label = label_font.render('Save the game', False, (170, 170, 170))
-                continue_label = label_font.render('Continue', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (255, 255, 255))
-                exit_label = label_font.render('Back to menu', False, (255, 255, 255))
-            if pause_menu == 3:
-                continue_label = label_font.render('Continue', False, (255, 255, 255))
-                save_label = label_font.render('Save the game', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (170, 170, 170))
-                exit_label = label_font.render('Back to menu', False, (255, 255, 255))
-            if pause_menu == 4:
-                continue_label = label_font.render('Continue', False, (255, 255, 255))
-                save_label = label_font.render('Save the game', False, (255, 255, 255))
-                options_label = label_font.render('Options', False, (255, 255, 255))
-                exit_label = label_font.render('Back to menu', False, (170, 170, 170))
-            screen.blit(continue_label, (540, 300))
-            screen.blit(save_label, (475, 370))
-            screen.blit(options_label, (547, 440))
-            screen.blit(exit_label, (493, 510))
+        if not _isAlive:
+            screen.blit(transparent_death, (0, 0))
 
+            screen.blit(pygame.transform.scale(load_image("game_over.png"), (300, 100)), (460, 250))
+            screen.blit(bacK_label, (380, 420))
+
+            if _is_music_pause:
+                pygame.mixer.music.stop()
+                #print(2)
+                battle_music(_isLive=False)
+                _is_music_pause = False
         else:
-            screen.blit(bg_castle, (0, 0))
-            screen.blit(transparent_surface, (0, 0))
-            x_hero, x_origin, y_hero = hero.get_x_y()
-            #print(x_hero, y_hero)
-            hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
-            camera.update(hero)  # центризируем камеру относительно персонажа
+            if global_pause:
+                if not use_pause:
+                    screen.blit(transparent_pause, (0, 0))
+                    screen.blit(pause_label, (475, 50))
+                    use_pause = True
+                if pause_menu == 1:
+                    continue_label = label_font.render('Continue', False, (170, 170, 170))
+                    save_label = label_font.render('Save the game', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (255, 255, 255))
+                    exit_label = label_font.render('Back to menu', False, (255, 255, 255))
+                if pause_menu == 2:
+                    if green_label:
+                        save_label = label_font.render('Save the game', False, (80, 255, 80))
+                    else:
+                        save_label = label_font.render('Save the game', False, (170, 170, 170))
+                    continue_label = label_font.render('Continue', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (255, 255, 255))
+                    exit_label = label_font.render('Back to menu', False, (255, 255, 255))
+                if pause_menu == 3:
+                    continue_label = label_font.render('Continue', False, (255, 255, 255))
+                    save_label = label_font.render('Save the game', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (170, 170, 170))
+                    exit_label = label_font.render('Back to menu', False, (255, 255, 255))
+                if pause_menu == 4:
+                    continue_label = label_font.render('Continue', False, (255, 255, 255))
+                    save_label = label_font.render('Save the game', False, (255, 255, 255))
+                    options_label = label_font.render('Options', False, (255, 255, 255))
+                    exit_label = label_font.render('Back to menu', False, (170, 170, 170))
+                screen.blit(continue_label, (540, 300))
+                screen.blit(save_label, (475, 370))
+                screen.blit(options_label, (547, 440))
+                screen.blit(exit_label, (493, 510))
 
-            boss.boss_behavior(x_hero, y_hero, platforms)
+            else:
+                screen.blit(bg_castle, (0, 0))
+                screen.blit(transparent_surface, (0, 0))
+                x_hero, x_origin, y_hero = hero.get_x_y()
+                # print(x_hero, y_hero)
+                hero.update(x_origin, y_hero, left, right, up, attack, ability, platforms)  # передвижение
+                camera.update(hero)  # центризируем камеру относительно персонажа
 
-            # _____________________________________-DAMAGE CALCULATING-_______________________________
+                boss.boss_behavior(x_hero, y_hero, platforms)
 
+                # _____________________________________-DAMAGE CALCULATING-_______________________________
 
-            # ___________________________________-FROM HERO-_______________________________
+                # ___________________________________-FROM HERO-_______________________________
 
-            hero_damage, damage_delta = hero.make_damage()
+                hero_damage, damage_delta = hero.make_damage()
+                hero.give_damage(boss.get_tick_damage())
+                now_hero_hp, max_hero_hp = hero.get_hp()
+                hero_hp.update(int(now_hero_hp), int(max_hero_hp), camera.state.x)
+                boss.dam_hero(hero_damage, x_hero, damage_delta)
 
-            # ___________________________________-FROM HERO-_______________________________
+                # ___________________________________-FROM HERO-_______________________________
 
-            # _____________________________________-DAMAGE CALCULATING-_______________________________
-            for element in entities:
-                screen.blit(element.image, camera.apply(element))
+                # _____________________________________-DAMAGE CALCULATING-_______________________________
+                fps_label.update_fps(int(clock.get_fps()), camera.state.x)
 
-            screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
-            # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))
-            # screen.blit(hero.image, camera.apply(hero))
+                for element in entities:
+                    screen.blit(element.image, camera.apply(element))
 
-        if hero.flag_to_stop():
-            running = False
-            pygame.mixer.music.stop()
+                screen.blit(pygame.transform.scale(hero.image, (120, 64)), camera.apply(hero))
+                # screen.blit(pygame.transform.scale2x(hero.image), camera.apply(hero))
+                # screen.blit(hero.image, camera.apply(hero))
 
-        if save_flag:
-            save_game(x_origin, y_hero, now_hero_hp, json_dict)
-            green_label = True
-            save_flag = False
+                if now_hero_hp <= 0:
+                    _isAlive = False
+
+            if save_flag:
+                save_game(x_origin, y_hero, now_hero_hp, json_dict)
+                green_label = True
+                save_flag = False
 
         pygame.display.update()  # обновление и вывод всех изменений на экран
         pygame.display.flip()
