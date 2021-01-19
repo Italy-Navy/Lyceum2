@@ -285,7 +285,7 @@ def DrawLvl(x_hero_input=150, y_hero_input=500, now_hero_hp=250):
             screen.blit(transparent_death, (0, 0))
 
             screen.blit(pygame.transform.scale(load_image("game_over.png"), (300, 100)), (460, 250))
-            screen.blit(bacK_label, (380, 420))
+            screen.blit(bacK_label, (430, 420))
 
             if _is_music_pause:
                 pygame.mixer.music.stop()
